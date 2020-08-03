@@ -1,0 +1,40 @@
+
+ 32/343 [=>............................] - ETA: 1s
+343/343 [==============================] - 0s 499us/step
+testing accuracy =  0.0
+==========================
+predict    0
+label       
+4        343
+==========================
+==========================
+0 Normal :  predict:  0 total:  0
+acc:  0.0
+==========================
+1 Fuzzers :  predict:  0 total:  0
+acc:  0.0
+==========================
+2 Analysis :  predict:  0 total:  0
+acc:  0.0
+==========================
+3 Backdoors :  predict:  0 total:  0
+acc:  0.0
+==========================
+4 Dos :  predict:  0 total:  343
+acc:  0.0
+==========================
+5 Exploits :  predict:  0 total:  0
+acc:  0.0
+==========================
+6 Generic :  predict:  0 total:  0
+acc:  0.0
+==========================
+7 Reconnaissance :  predict:  0 total:  0
+acc:  0.0
+==========================
+8 Shellcode :  predict:  0 total:  0
+acc:  0.0
+==========================
+9 Worms :  predict:  0 total:  0
+acc:  0.0
+=========================
