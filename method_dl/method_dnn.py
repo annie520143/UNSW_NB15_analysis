@@ -104,11 +104,12 @@ def matricsDNN(predict, actual):
             if(predict_index[i] != i):
                 predict_index.insert(i, i)
         elif(len(predict_index) <= 10):
-            if(len(predict_index) >= i ):
+            if(len(predict_index) <= i ):
                 predict_index.insert(i, i)
             elif(predict_index[i] != i):
                 predict_index.insert(i, i)
         
+        #cm = cm[~cm.index.duplicate()]
         cm = cm.reindex(index=predict_index, fill_value=0)
 
         if(len(actual_index) == 10):
@@ -121,6 +122,8 @@ def matricsDNN(predict, actual):
                 actual_index.insert(i, i)
         
         cm = cm.reindex(columns = actual_index, fill_value=0)
+
+        
 
         """ if(actual_index[i] != i):
             actual_index.insert(i)
