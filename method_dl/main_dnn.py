@@ -162,8 +162,8 @@ def info():
     print('===================================')
 
 
-train_path = "../dataset/UNSW-NB15_1_random(2w)_nodup.csv"
-test_path = "../dataset/UNSW-NB15_2.csv"
+train_path = "../dataset/UNSW-NB15_1_random(2w).csv"
+test_path = "../dataset/1_0w1_1w1_yshf_notime.csv"
 
 expected_output = 'attack_cat'
 used_model = 'model/dnn_selfdef1_random.h5'
@@ -204,9 +204,9 @@ if __name__ == "__main__":
                                 verbose=1,
                                 mode='max')
 
-    #model.summary()
+    """
     #training
-    model.fit(train_np, trainlabel_np, batch_size=100, epochs=500, callbacks=[
+    model.fit(train_np, trainlabel_np, batch_size=100, epochs=100, callbacks=[
             earlystopping, checkpoint, csv_logger], shuffle=True)
     #model.fit(train_np, trainlabel_np, batch_size=100, epochs=10, shuffle=True)
 
@@ -220,9 +220,10 @@ if __name__ == "__main__":
     #method.detailAccuracyDNN(predictLabel, trainlabel_list, expected_output)
     #bad_index_list = method.detailAccuracyDNN(predictLabel, testattcat_list)
     #print(bad_index_list)
-
+    """
+    
     model = ks.load_model(used_model)
-    print(model.summary())
+    #print(model.summary())
     
     result = model.evaluate(test_np,  testlabel_np)
     print("testing accuracy = ", result[1])
@@ -231,7 +232,7 @@ if __name__ == "__main__":
     #print(predictLabel)
     np.set_printoptions(threshold=sys.maxsize)
 
-    method.metricsDNN(predictLabel, testlabel_list)
+    method.matricsDNN(predictLabel, testlabel_list)
     method.detailAccuracyDNN(predictLabel, testlabel_list, expected_output)
     #bad_index_list = method.detailAccuracyDNN(predictLabel, testattcat_list)
     #print(bad_index_list) 

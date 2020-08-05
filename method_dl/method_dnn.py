@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 """
 Import the Keras libraries and packages
 """
@@ -10,9 +11,21 @@ from keras.layers.normalization import BatchNormalization
 from keras.layers.core import Activation, Dense, Dropout
 from keras.layers.recurrent import LSTM
 from keras.optimizers import SGD, Adam
+#from sklearn.metrics import confusion_matrix
 
-attack_cat = ['Normal', 'Fuzzers', 'Analysis',
-'Backdoors', 'DoS', 'Exploits', 'Generic', 'Reconnaissance', 'Shellcode', 'Worms']
+attack_cat_dict = {
+                0: 'Normal',       
+                1 : 'Fuzzers', 
+                2 : 'Analysis', 
+                3 : 'Backdoors', 
+                4 : 'DoS', 
+                5 : 'Exploits', 
+                6 : 'Generic', 
+                7 : 'Reconnaissance', 
+                8 : 'Shellcode', 
+                9 : 'Worms'
+                }
+attack_cat = ['Normal', 'Fuzzers', 'Analysis', 'Backdoors', 'DoS', 'Exploits', 'Generic', 'Reconnaissance', 'Shellcode', 'Worms']
 
 #DNN model
 def simpleDNN(feature_dim, units, atv, loss):
@@ -73,14 +86,54 @@ def simpleDNN_specify(feature_dim, units, atv, loss, output_dim):
 
     return model
 
+""" def matricsDNN(predict, actual):
+    matrix_arr = confusion_matrix(actual, predict)
+    print(matrix_arr)
+ """
 
-def metricsDNN(predict, actual):
-    print(predict.shape)
-    print(actual.shape)
+def matricsDNN(predict, actual):
+    
     print("=========================")
-    confusion_metrics = pd.crosstab(actual, predict, rownames=['label'], colnames=['predict'])
-    print(confusion_metrics)
-    print("=========================")
+    cm = pd.crosstab(actual, predict, rownames=['predict'], colnames=['actual'],dropna=False)
+    actual_index = cm.columns.tolist()
+    predict_index = cm.index.tolist()
+    #print(predict_index, actual_index)
+
+    for i in range(10):
+        if(len(predict_index) == 10):
+            if(predict_index[i] != i):
+                predict_index.insert(i, i)
+        elif(len(predict_index) <= 10):
+            if(len(predict_index) >= i ):
+                predict_index.insert(i, i)
+            elif(predict_index[i] != i):
+                predict_index.insert(i, i)
+        
+        cm = cm.reindex(index=predict_index, fill_value=0)
+
+        if(len(actual_index) == 10):
+            if(actual_index[i] != i):
+                actual_index.insert(i, i)
+        elif(len(actual_index) <= 10):           
+            if(len(actual_index) <= i):               
+                actual_index.insert(i, i)
+            elif(actual_index[i] != i):
+                actual_index.insert(i, i)
+        
+        cm = cm.reindex(columns = actual_index, fill_value=0)
+
+        """ if(actual_index[i] != i):
+            actual_index.insert(i)
+            col_name = cm.columns.tolist()
+            col_name.insert(i, i)
+            cm.reindex(columns=col_name, fill_value=0, inline=True) """
+
+    
+    cm = cm.rename(columns = attack_cat_dict, index = attack_cat_dict)
+    print(cm)
+    print("=========================") 
+
+
 
 
 def detailAccuracyDNN(predict, actual, method):
