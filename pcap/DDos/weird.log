@@ -1,0 +1,14 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	weird
+#open	2020-06-12-00-52-21
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	name	addl	notice	peer
+#types	time	string	addr	port	addr	port	string	string	bool	string
+1591893388.814973	CfsIux23R5rv7AiaXb	10.0.2.15	54062	10.0.2.4	80	TCP_seq_underflow_or_misorder	-	F	bro
+1591893389.839409	CqdwP21jUzFppYpGY5	10.0.2.15	54064	10.0.2.4	80	TCP_seq_underflow_or_misorder	-	F	bro
+1591893389.839421	CJdTXr2CduAgWHXsol	10.0.2.15	54066	10.0.2.4	80	TCP_seq_underflow_or_misorder	-	F	bro
+1591893390.862781	CLz4Ca2LxMUCpea9Gd	10.0.2.15	54068	10.0.2.4	80	TCP_seq_underflow_or_misorder	-	F	bro
+1591893390.862810	CkqH9n499WObYGziRg	10.0.2.15	54070	10.0.2.4	80	TCP_seq_underflow_or_misorder	-	F	bro
+#close	2020-06-12-00-52-21

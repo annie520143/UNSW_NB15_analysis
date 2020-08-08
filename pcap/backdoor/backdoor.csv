@@ -1,0 +1,7 @@
+Stime,srcip,sport,dstip,dsport,proto,service,dur,sbytes,dbytes,state,Spkts,Dpkts,is_sm_ips_ports,ct_srv_src,ct_srv_dst,ct_src_dport_ltm,ct_dst_sport_ltm,ct_dst_src_ltm,ct_dst_ltm,ct_src_ltm,sttl,dttl,trans_depth,res_bdy_len,ct_flw_http_mthd,smeansz,dmeansz,swin,dwin,stcpb,dtcpb,Label,attack_cat
+1591934169,10.0.2.4,55458,10.0.2.15,4444,tcp,-,298.901222,2902,154,S1,103,119,0,0,0,0,0,0,0,0,64,64,0,0,0,80,53,510,491,4152164895,2984756551,1,Backdoors
+1591934244,10.0.2.4,5353,224.0.0.251,5353,udp,dns,-,-,-,S0,1,0,0,0,0,0,0,0,0,1,255,0,0,0,0,169,0,0,0,0,0,1,Backdoors
+1591934245,fe80::e28c:2ab8:f469:e2ed,5353,ff02::fb,5353,udp,dns,-,-,-,S0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,189,0,0,0,0,0,1,Backdoors
+1591934260,10.0.2.4,68,10.0.2.3,67,udp,dhcp,0.013687,300,548,SF,1,1,0,0,0,0,0,0,0,2,64,255,0,0,0,328,576,0,0,0,0,1,Backdoors
+1591934328,10.0.2.15,5353,224.0.0.251,5353,udp,dns,-,-,-,S0,1,0,0,0,1,0,1,0,1,0,255,0,0,0,0,169,0,0,0,0,0,1,Backdoors
+1591934329,fe80::826b:2037:e2fa:462,5353,ff02::fb,5353,udp,dns,-,-,-,S0,1,0,0,0,1,0,1,0,1,0,0,0,0,0,0,189,0,0,0,0,0,1,Backdoors

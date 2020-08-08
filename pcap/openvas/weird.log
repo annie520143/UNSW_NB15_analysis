@@ -1,0 +1,22 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	weird
+#open	2020-07-02-02-48-06
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	name	addl	notice	peer
+#types	time	string	addr	port	addr	port	string	string	bool	string
+1593625701.392689	CFTKRR3WxEliq0Wht1	10.0.2.15	50045	10.0.2.5	80	bad_HTTP_request	-	F	bro
+1593625701.392689	CFTKRR3WxEliq0Wht1	10.0.2.15	50045	10.0.2.5	80	line_terminated_with_single_CR	-	F	bro
+1593625701.739894	CzUmpr3WwuLECMgB1a	10.0.2.15	51015	10.0.2.5	80	bad_HTTP_request	-	F	bro
+1593625701.739894	CzUmpr3WwuLECMgB1a	10.0.2.15	51015	10.0.2.5	80	line_terminated_with_single_CR	-	F	bro
+1593625701.767792	CUzR5oe8vIi1lBsvh	10.0.2.15	57541	10.0.2.5	80	bad_HTTP_request	-	F	bro
+1593625701.767792	CUzR5oe8vIi1lBsvh	10.0.2.15	57541	10.0.2.5	80	line_terminated_with_single_CR	-	F	bro
+1593625701.787047	C1ebDEvsCrg7JOJr1	10.0.2.15	57745	10.0.2.5	80	bad_HTTP_request	-	F	bro
+1593625701.787047	C1ebDEvsCrg7JOJr1	10.0.2.15	57745	10.0.2.5	80	line_terminated_with_single_CR	-	F	bro
+1593625704.804446	Cd8x422RHf1wQBPOTd	10.0.2.15	38785	10.0.2.5	80	bad_HTTP_request	-	F	bro
+1593625704.806257	CgHAJ4pu9zn7zcnIj	10.0.2.15	42623	10.0.2.5	80	bad_HTTP_request	-	F	bro
+1593625704.806257	CgHAJ4pu9zn7zcnIj	10.0.2.15	42623	10.0.2.5	80	line_terminated_with_single_CR	-	F	bro
+1593625729.338465	Cwsc45GBlktUANZK4	fe80::5618:6d7c:a502:117f	5353	ff02::fb	5353	dns_unmatched_msg	-	F	bro
+1593625729.338465	Ct6GFk4Yw0lUzbLFVb	10.0.2.15	5353	224.0.0.251	5353	dns_unmatched_msg	-	F	bro
+#close	2020-07-02-02-48-07

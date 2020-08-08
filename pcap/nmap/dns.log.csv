@@ -1,0 +1,5 @@
+"ts","uid","id_orig_h","id_orig_p","id_resp_h","id_resp_p","proto","trans_id","rtt","query","qclass","qclass_name","qtype","qtype_name","rcode","rcode_name","AA","TC","RD","RA","Z","answers","TTLs","rejected"
+"1591890667.110756","C8mklp2uAfrVjQj7g","10.0.2.4","5353","224.0.0.251","5353","udp","0","-","_afpovertcp._tcp.local","1","C_INTERNET","12","PTR","-","-","F","F","F","F","0","-","-"
+"1591890668.834167","C1fiY42uIguvI7NFE","fe80::e28c:2ab8:f469:e2ed","5353","ff02::fb","5353","udp","0","-","_afpovertcp._tcp.local","1","C_INTERNET","12","PTR","-","-","F","F","F","F","0","-","-"
+"1591890694.297662","CZjbDi14ZDsHrslTr5","10.0.2.15","5353","224.0.0.251","5353","udp","0","-","_afpovertcp._tcp.local","1","C_INTERNET","12","PTR","-","-","F","F","F","F","0","-","-"
+"1591890696.006515","Ck330H1XigkBEOte7g","fe80::826b:2037:e2fa:462","5353","ff02::fb","5353","udp","0","-","_afpovertcp._tcp.local","1","C_INTERNET","12","PTR","-","-","F","F","F","F","0","-","-"

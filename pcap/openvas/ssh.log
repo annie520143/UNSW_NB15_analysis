@@ -1,0 +1,18 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	ssh
+#open	2020-07-02-02-48-06
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	version	auth_success	auth_attempts	direction	client	server	cipher_alg	mac_alg	compression_alg	kex_alg	host_key_alg	host_key
+#types	time	string	addr	port	addr	port	count	bool	count	enum	string	string	string	string	string	string	string	string
+1593625701.382951	CE0u4U3p2OqUTd0Lqj	10.0.2.15	52531	10.0.2.5	22	-	-	-	-	\x16\x03\x01\x00\xeb\x01\x00\x00\xe7\x03\x03^\xfc\xcc\\f\x13\xe0'\xf8%\x9bE[\xe7m\xc5\xf4d\x156\xb9`V\x80y\xa9\xcd\xd8h\x9b\x92\x1f\x00\x00t\xc0+\xc0,\xc0\x86\xc0\x87\xc0\x09\xc0#\xc0	SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3	-	-	-	-	-	-
+1593625701.395715	CReVJrtfVZEDsqChl	10.0.2.15	52903	10.0.2.5	22	-	-	-	-	GET / HTTP/1.0	SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3	-	-	-	-	-	-
+1593625701.749056	CsEDRegrubjYbmCZ3	10.0.2.15	56817	10.0.2.5	22	-	-	-	-	-	SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3	-	-	-	-	-	-
+1593625701.765502	CxL9ZV3hqFgfpZ5MQd	10.0.2.15	52031	10.0.2.5	22	2	F	1	-	SSH-2.0-libssh-0.6.3	SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3	aes128-ctr	hmac-sha1	none	curve25519-sha256@libssh.org	ssh-rsa	dd:b5:6c:85:5d:bf:3f:12:55:80:a3:92:25:30:a7:29
+1593625704.831340	CUbNKy30D3U7ZuTEQk	10.0.2.15	44811	10.0.2.5	22	-	-	-	-	\x16\x03\x01\x03\xa1\x01\x00\x03\x9d\x03\x01^\xfc\xcciy31TFtkA34_E8lQGWCGHu8YiEwZl\x00\x038\x00\x00\x00\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00\x06\x00\x07\x00\x08\x00\x09\x00	SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3	-	-	-	-	-	-
+1593625704.852154	C0KXjp4WRb9Bcf96Hf	10.0.2.15	59271	10.0.2.5	22	-	-	-	-	\x16\x03\x02\x03\xa1\x01\x00\x03\x9d\x03\x02^\xfc\xcci4PLB0OiQuwKH1TnDCcroIw2MAZPV\x00\x038\x00\x00\x00\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00\x06\x00\x07\x00\x08\x00\x09\x00	SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3	-	-	-	-	-	-
+1593625704.859590	C8jWRmohePpNxrIN	10.0.2.15	45647	10.0.2.5	22	-	-	-	-	\x16\x03\x03\x03\xc7\x01\x00\x03\xc3\x03\x03^\xfc\xccirQzI3iFVQaqj6pCjRgP_qO2cNCzQ\x00\x038\x00\x00\x00\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00\x06\x00\x07\x00\x08\x00\x09\x00	SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3	-	-	-	-	-	-
+1593625704.880180	C9q2z84hXp2r4mHaW8	10.0.2.15	55343	10.0.2.5	22	-	-	-	-	-	SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3	-	-	-	-	-	-
+1593625706.883497	C8u5md2x3CWlwnYdsj	10.0.2.15	55307	10.0.2.5	22	-	-	-	-	\x16\x03\x00\x03\xa1\x01\x00\x03\x9d\x03\x00^\xfc\xcckmT9JsKaP_vi5OgxtpHNrGsMzTqIb\x00\x038\x00\x00\x00\x01\x00\x02\x00\x03\x00\x04\x00\x05\x00\x06\x00\x07\x00\x08\x00\x09\x00	SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3	-	-	-	-	-	-
+#close	2020-07-02-02-48-07

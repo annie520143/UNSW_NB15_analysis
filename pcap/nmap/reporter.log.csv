@@ -1,0 +1,2 @@
+"ts","level","message","location"
+"1591890717.151082","Reporter::WARNING","The analyzed trace file was determined to contain only TCP control packets, which may indicate it's been pre-filtered.  By default, Bro reports the missing segments for this type of trace, but the 'detect_filtered_trace' option may be toggled if that's not desired."

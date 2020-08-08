@@ -1,0 +1,5 @@
+"ts","uid","id_orig_h","id_orig_p","id_resp_h","id_resp_p","proto","trans_id","rtt","query","qclass","qclass_name","qtype","qtype_name","rcode","rcode_name","AA","TC","RD","RA","Z","answers","TTLs","rejected"
+"1591934243.885753","CEvMSz2FxLxJsOMJYh","10.0.2.4","5353","224.0.0.251","5353","udp","0","-","_afpovertcp._tcp.local","1","C_INTERNET","12","PTR","-","-","F","F","F","F","0","-","-"
+"1591934244.996666","CSIEb21mDJI8G1D1jb","fe80::e28c:2ab8:f469:e2ed","5353","ff02::fb","5353","udp","0","-","_afpovertcp._tcp.local","1","C_INTERNET","12","PTR","-","-","F","F","F","F","0","-","-"
+"1591934327.804436","CPm2Yp4vOEm1X5VfA7","10.0.2.15","5353","224.0.0.251","5353","udp","0","-","_ipp._tcp.local","1","C_INTERNET","12","PTR","-","-","F","F","F","F","0","-","-"
+"1591934329.039756","CSOdaMSjyU9c4tcXj","fe80::826b:2037:e2fa:462","5353","ff02::fb","5353","udp","0","-","_ipp._tcp.local","1","C_INTERNET","12","PTR","-","-","F","F","F","F","0","-","-"
