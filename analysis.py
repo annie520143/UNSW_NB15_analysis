@@ -57,10 +57,13 @@ for i,key in enumerate(keys):
     values = Dict[target][key]
     cnt = pd.value_counts(values)
     cnt = cnt.sort_index()
+
+    R = cnt.max()-cnt.min()
+    scale = R/20
+    bins =  [x*scale+cnt.min() for x in range(0,21) ]
     ax = plt.subplot(2,5,i+1)
     ax.title.set_text(key)
-    plt.plot(cnt)
-    #print(cnt.index)
+    plt.hist(cnt, bins=bins)
 
 plt.show()
 
