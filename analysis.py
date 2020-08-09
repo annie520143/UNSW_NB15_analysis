@@ -48,6 +48,7 @@ for feature in features:
 
     print('==================================')
 
+### change the target to analysis different features
 target = 'Dpkts'
 
 plt.figure()
