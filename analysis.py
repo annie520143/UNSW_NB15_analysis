@@ -60,6 +60,7 @@ for i,key in enumerate(keys):
     cnt = cnt.sort_index()
 
     R = cnt.max()-cnt.min()
+    print(cnt)
     scale = R/20
     bins =  [x*scale+cnt.min() for x in range(0,21) ]
     ax = plt.subplot(2,5,i+1)
