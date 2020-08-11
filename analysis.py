@@ -1,5 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import random
+data = [random.normalvariate(20,5) for _ in range(100)]
+
 
 keys = ['Fuzzers', 'Exploits', 'Reconnaissance', 'DoS', 'Generic', 'Analysis', 'Backdoors', 'Worms', 'Shellcode', 'Normal']
 
@@ -30,7 +33,7 @@ for i in range(n):
         value = row[feature]
         
         Dict[feature][attack].append(value)
-
+"""
 for feature in features:
     print(feature)
     print('------------------------------------')
@@ -46,7 +49,7 @@ for feature in features:
             maxinum = 0
         print("{:<12s}{:<12s}{:>12f}{:<12s}{:>12f}".format(key,':\t', mininum,'\t', maxinum))
 
-    print('==================================')
+    print('==================================')"""
 
 ### change the target to analysis different features
 target = 'Dpkts'
@@ -62,10 +65,17 @@ for i,key in enumerate(keys):
     R = cnt.max()-cnt.min()
     print(cnt)
     scale = R/20
-    bins =  [x*scale+cnt.min() for x in range(0,21) ]
+    bins =  [x*scale+min(value) for x in range(0,21) ]
     ax = plt.subplot(2,5,i+1)
     ax.title.set_text(key)
-    plt.hist(cnt, bins=bins)
+
+
+    #print(type(cnt.iloc[1]))
+    
+    data = pd.Series(value, index=index)
+    
+    print(data)
+    plt.hist(values,bins=bins)
 
 plt.show()
 
