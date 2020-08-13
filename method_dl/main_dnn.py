@@ -115,6 +115,9 @@ def processed_data(datapath, result_opt):
         data_df, attcat_list = init(data_df, result_opt)
         #print("1 ", type(data_srcip))
 
+        del data_df['attack_cat']
+        del data_df['Label']
+
         #transforming datatype
         data_df_transtype = prep.trans_datatype(data_df)
         #print("2 ", type(data_df))
@@ -135,6 +138,9 @@ def processed_data(datapath, result_opt):
 
     elif(result_opt == 'label'):
         data_df, label_list = init(data_df, result_opt)
+
+        del data_df['attack_cat']
+        del data_df['Label']
 
         #transforming datatype
         data_df_transtype = prep.trans_datatype(data_df)
@@ -163,9 +169,9 @@ def info():
 
 
 train_path = "../dataset/UNSW-NB15_1_random(2w).csv"
-test_path = "../dataset/2_0w4_1w4_yshf_notime.csv"
+test_path = "../NASHUA.csv"
 
-expected_output = 'attack_cat'
+expected_output = 'label'
 used_model = 'model/dnn_selfdef1_random.h5'
 
 
@@ -183,7 +189,7 @@ if __name__ == "__main__":
     dataset_size = train_np.shape[0]  # how many data
     feature_dim = train_np.shape[1] # how mant features
 
-
+    print(train_np.shape)
 
     # simpleDNN_dropout(feature_dim, units, atv, loss)
     if(expected_output == 'label'):
@@ -200,7 +206,7 @@ if __name__ == "__main__":
                                 monitor='accuracy',
                                 mode='max')
     earlystopping = EarlyStopping(monitor='accuracy',
-                                patience=50,
+                                patience=10,
                                 verbose=1,
                                 mode='max')
 
@@ -211,29 +217,20 @@ if __name__ == "__main__":
     #model.fit(train_np, trainlabel_np, batch_size=100, epochs=10, shuffle=True)
 
     result = model.evaluate(train_np,  trainlabel_np)
-    print("testing accuracy = ", result[1])
-
-    #testing_predict(model, testlabel_list, test_srcip) 
-    predictLabel = model.predict_classes(train_np)
-    np.set_printoptions(threshold=sys.maxsize)
-    #print(predictLabel)
-    #method.detailAccuracyDNN(predictLabel, trainlabel_list, expected_output)
-    #bad_index_list = method.detailAccuracyDNN(predictLabel, testattcat_list)
-    #print(bad_index_list)
+    print("training accuracy = ", result[1])
    
 
     model = ks.load_model(used_model)
     #print(model.summary())
     
-    result = model.evaluate(test_np,  testlabel_np)
-    print("testing accuracy = ", result[1])
+    """ result = model.evaluate(test_np,  testlabel_np)
+    print("testing accuracy = ", result[1])"""
     
     predictLabel = model.predict_classes(test_np)
-    #print(predictLabel)
+    print(predictLabel)
     np.set_printoptions(threshold=sys.maxsize)
 
-    method.matricsDNN(predictLabel, testlabel_list)
-    method.detailAccuracyDNN(predictLabel, testlabel_list, expected_output)
-    #bad_index_list = method.detailAccuracyDNN(predictLabel, testattcat_list)
-    #print(bad_index_list) 
+    """method.matricsDNN(predictLabel, testlabel_list, method)
+    method.detailAccuracyDNN(predictLabel, testlabel_list, expected_output)"""
+
 
