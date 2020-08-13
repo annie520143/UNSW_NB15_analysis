@@ -169,9 +169,9 @@ def info():
 
 
 train_path = "../dataset/UNSW-NB15_1_random(2w).csv"
-test_path = "../NASHUA.csv"
+test_path = "../dataset/2_0w4_1w4_nshf_notime.csv"
 
-expected_output = 'label'
+expected_output = 'attack_cat'
 used_model = 'model/dnn_selfdef1_random.h5'
 
 
