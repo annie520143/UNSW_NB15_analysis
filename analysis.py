@@ -53,7 +53,7 @@ for i in range(n):
 
 ### change the target to analysis different features
 target1 = 'Dpkts'
-
+target2 = 'Spkts'
 
 plt.figure()
 plt.title('test')
