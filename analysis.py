@@ -33,8 +33,8 @@ for i in range(n):
         value = row[feature]
         
         Dict[feature][attack].append(value)
-"""
-for feature in features:
+
+""" for feature in features:
     print(feature)
     print('------------------------------------')
     for key in keys:
@@ -49,33 +49,53 @@ for feature in features:
             maxinum = 0
         print("{:<12s}{:<12s}{:>12f}{:<12s}{:>12f}".format(key,':\t', mininum,'\t', maxinum))
 
-    print('==================================')"""
+    print('==================================') """
 
 ### change the target to analysis different features
-target = 'Dpkts'
+target1 = 'Dpkts'
+
 
 plt.figure()
-plt.title(target)
+plt.title('test')
 
+"""
 for i,key in enumerate(keys):
-    values = Dict[target][key]
-    cnt = pd.value_counts(values)
-    cnt = cnt.sort_index()
+    values1 = Dict[target1][key]
+    values2 = Dict[target2][key]
+    values = []
 
-    R = cnt.max()-cnt.min()
-    print(cnt)
+    for j in range(len(values1)):
+        if(values2[j] == 0):
+            values.append(0)
+        else:
+            values.append(values1[j]-values2[j])
+        
+    
+
+    R = max(values) - min(values)
+
     scale = R/20
-    bins =  [x*scale+min(value) for x in range(0,21) ]
+    bins =  [x*scale+min(values) for x in range(0,21) ]
     ax = plt.subplot(2,5,i+1)
     ax.title.set_text(key)
 
-
-    #print(type(cnt.iloc[1]))
-    
-    data = pd.Series(value, index=index)
-    
-    print(data)
     plt.hist(values,bins=bins)
+"""
+
+for i,key in enumerate(keys):
+    values = Dict[target1][key]
+    
+
+    R = max(values) - min(values)
+
+    scale = R/20
+    bins =  [x*scale+min(values) for x in range(1,21) ]
+    ax = plt.subplot(2,5,i+1)
+    ax.title.set_text(key)
+
+    plt.hist(values,bins=bins) 
+
+
 
 plt.show()
 
