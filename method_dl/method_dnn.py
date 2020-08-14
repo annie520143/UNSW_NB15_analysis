@@ -27,6 +27,12 @@ attack_cat_dict = {
                 }
 attack_cat = ['Normal', 'Fuzzers', 'Analysis', 'Backdoors', 'DoS', 'Exploits', 'Generic', 'Reconnaissance', 'Shellcode', 'Worms']
 
+label_dict = {
+                0: 'Normal',       
+                1: 'Attack'
+                }
+attack_cat = ['Normal', 'Attack']
+
 #DNN model
 def simpleDNN(feature_dim, units, atv, loss):
     
@@ -52,12 +58,12 @@ def simpleDNN_dropout(feature_dim, units, atv, loss, output_dim):
     model.add(Dense(input_dim=feature_dim, units=units,
         activation = atv))
     
-    model.add(Dropout(0.2, input_shape=(32,)))
+    model.add(Dropout(0.1, input_shape=(32,)))
     
     model.add(Dense(input_dim=feature_dim, units=16,
         activation = atv)) 
     
-    model.add(Dropout(0.2, input_shape=(16,)))
+    model.add(Dropout(0.1, input_shape=(16,)))
 
     """for i in range(3):
         model.add(Dense(units=units-i*2, activation=atv))"""
@@ -91,50 +97,42 @@ def simpleDNN_specify(feature_dim, units, atv, loss, output_dim):
     print(matrix_arr)
  """
 
-def matricsDNN(predict, actual):
+def matricsDNN(predict, actual, method):
     
-    print("=========================")
-    cm = pd.crosstab(actual, predict, rownames=['predict'], colnames=['actual'],dropna=False)
-    actual_index = cm.columns.tolist()
-    predict_index = cm.index.tolist()
-    #print(predict_index, actual_index)
+    if method == 'attack_cat':
+        print("=========================")
+        cm = pd.crosstab(actual, predict, rownames=['actual'], colnames=['predict'],dropna=False)
+        actual_index = cm.columns.tolist()
+        predict_index = cm.index.tolist()
+        #print(predict_index, actual_index)
 
-    for i in range(10):
-        if(len(predict_index) == 10):
-            if(predict_index[i] != i):
-                predict_index.insert(i, i)
-        elif(len(predict_index) <= 10):
-            if(len(predict_index) <= i ):
-                predict_index.insert(i, i)
-            elif(predict_index[i] != i):
-                predict_index.insert(i, i)
-        
-        #cm = cm[~cm.index.duplicate()]
-        cm = cm.reindex(index=predict_index, fill_value=0)
+        for i in range(10):
+            if(len(predict_index) == 10):
+                if(predict_index[i] != i):
+                    predict_index.insert(i, i)
+            elif(len(predict_index) <= 10):
+                if(len(predict_index) <= i ):
+                    predict_index.insert(i, i)
+                elif(predict_index[i] != i):
+                    predict_index.insert(i, i)
+            
+            #cm = cm[~cm.index.duplicate()]
+            cm = cm.reindex(index=predict_index, fill_value=0)
 
-        if(len(actual_index) == 10):
-            if(actual_index[i] != i):
-                actual_index.insert(i, i)
-        elif(len(actual_index) <= 10):           
-            if(len(actual_index) <= i):               
-                actual_index.insert(i, i)
-            elif(actual_index[i] != i):
-                actual_index.insert(i, i)
-        
-        cm = cm.reindex(columns = actual_index, fill_value=0)
-
-        
-
-        """ if(actual_index[i] != i):
-            actual_index.insert(i)
-            col_name = cm.columns.tolist()
-            col_name.insert(i, i)
-            cm.reindex(columns=col_name, fill_value=0, inline=True) """
-
-    
-    cm = cm.rename(columns = attack_cat_dict, index = attack_cat_dict)
-    print(cm)
-    print("=========================") 
+            if(len(actual_index) == 10):
+                if(actual_index[i] != i):
+                    actual_index.insert(i, i)
+            elif(len(actual_index) <= 10):           
+                if(len(actual_index) <= i):               
+                    actual_index.insert(i, i)
+                elif(actual_index[i] != i):
+                    actual_index.insert(i, i)
+            
+            cm = cm.reindex(columns = actual_index, fill_value=0)
+       
+        cm = cm.rename(columns = attack_cat_dict, index = attack_cat_dict)
+        print(cm)
+        print("=========================") 
 
 
 

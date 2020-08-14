@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import random
-data = [random.normalvariate(20,5) for _ in range(100)]
+
 
 
 keys = ['Fuzzers', 'Exploits', 'Reconnaissance', 'DoS', 'Generic', 'Analysis', 'Backdoors', 'Worms', 'Shellcode', 'Normal']

@@ -51,11 +51,7 @@ def seperate_att_lab_catagory(packets):
 
 def seperate_att_lab_label(packets):
     
-    attack_cat = packets['attack_cat'].to_numpy()
     label = packets['Label'].to_numpy()
-    del packets['attack_cat']
-    #del packets['Label']
-
     return packets, label
 
 
