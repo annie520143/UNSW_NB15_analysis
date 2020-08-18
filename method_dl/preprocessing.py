@@ -1,4 +1,5 @@
 from sklearn.preprocessing import MinMaxScaler
+#from sklearn.preprocessing import Imputer
 import numpy as np
 import pandas as pd
 
@@ -233,7 +234,10 @@ def trans_datatype(packets):
 
 
 def np_fillna(packets):
+    df = pd.DataFrame(packets)
+    #print("is nan? ", df.isnull().any())
+    df.fillna(0, inplace= True)
+    #print("is nan? again??? ", df.isnull().any())
     
-    arr = np.isnan(packets)
-    packets[arr] = 0
+    packets = df.values
     return packets

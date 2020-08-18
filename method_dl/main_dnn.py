@@ -132,7 +132,9 @@ def processed_data(datapath, result_opt):
         #turn dataframe and list to np array
         attcat_np, data_np = np.array(attcat_list_oneHot), np.array(data_df_scale)
         #deal with problem of key 'ct_ftp_cmd'
+        
         data_np = prep.np_fillna(data_np)
+
 
         return data_np, attcat_np, attcat_list
 
