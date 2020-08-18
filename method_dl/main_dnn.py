@@ -134,7 +134,7 @@ def processed_data(datapath, result_opt):
         #deal with problem of key 'ct_ftp_cmd'
         
         data_np = prep.np_fillna(data_np)
-        
+
 
         return data_np, attcat_np, attcat_list
 
@@ -229,10 +229,10 @@ if __name__ == "__main__":
     print("testing accuracy = ", result[1])"""
     
     predictLabel = model.predict_classes(test_np)
-    print(predictLabel)
+    #print(predictLabel)
     np.set_printoptions(threshold=sys.maxsize)
 
-    """method.matricsDNN(predictLabel, testlabel_list, method)
-    method.detailAccuracyDNN(predictLabel, testlabel_list, expected_output)"""
+    method.matricsDNN(predictLabel, testlabel_list, method)
+    method.detailAccuracyDNN(predictLabel, testlabel_list, expected_output)
 
 

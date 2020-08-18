@@ -211,6 +211,7 @@ def del_tcp_features(packets):
 #normalization
 def feature_scaling(packets):
     sc = MinMaxScaler(feature_range=(0, 1))
+    packets = np.na_to_num(packets)
     packets_scaled = sc.fit_transform(packets)
 
     return packets_scaled
