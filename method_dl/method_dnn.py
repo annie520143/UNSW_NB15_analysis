@@ -14,15 +14,15 @@ from keras.optimizers import SGD, Adam
 #from sklearn.metrics import confusion_matrix
 
 attack_cat_dict = {
-                0: 'Normal',       
-                1 : 'Fuzzers', 
-                2 : 'Analysis', 
-                3 : 'Backdoors', 
+                0: 'Nor',       
+                1 : 'Fuz', 
+                2 : 'Analy', 
+                3 : 'Bd', 
                 4 : 'DoS', 
-                5 : 'Exploits', 
-                6 : 'Generic', 
-                7 : 'Reconnaissance', 
-                8 : 'Shellcode', 
+                5 : 'Explo', 
+                6 : 'Ge', 
+                7 : 'Recon', 
+                8 : 'Shell', 
                 9 : 'Worms'
                 }
 attack_cat = ['Normal', 'Fuzzers', 'Analysis', 'Backdoors', 'DoS', 'Exploits', 'Generic', 'Reconnaissance', 'Shellcode', 'Worms']
@@ -30,8 +30,8 @@ attack_cat = ['Normal', 'Fuzzers', 'Analysis', 'Backdoors', 'DoS', 'Exploits', '
 label_dict = {
                 0: 'Normal',       
                 1: 'Attack'
-                }
-attack_cat = ['Normal', 'Attack']
+            }
+label = ['Normal', 'Attack']
 
 #DNN model
 def simpleDNN(feature_dim, units, atv, loss):
@@ -153,10 +153,12 @@ def detailAccuracyDNN(predict, actual, method):
             x[value] = x[value]+1
     
     attack_n = n - total[0]
+    #print("attack_cat len:", len(attack_cat))
 
     if(method == 'attack_cat'):
         for index in range(10):
             print("==========================")
+            
             print(index, attack_cat[index], ': ','predict: ', x[index], 'total: ', total[index])
             try:
                 acc = x[index]/total[index]       
@@ -175,7 +177,7 @@ def detailAccuracyDNN(predict, actual, method):
     elif(method == 'label'):
         for index in range(2):
             print("==========================")
-            print(index, ': ', 'predict: ', x[index], 'total: ', total[index])
+            print(index, label[index],': ', 'predict: ', x[index], 'total: ', total[index])
             try:
                 print("acc: ", x[index]/total[index])
             except ZeroDivisionError:

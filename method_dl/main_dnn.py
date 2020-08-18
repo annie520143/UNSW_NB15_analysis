@@ -232,7 +232,7 @@ if __name__ == "__main__":
     #print(predictLabel)
     np.set_printoptions(threshold=sys.maxsize)
 
-    method.matricsDNN(predictLabel, testlabel_list, method)
+    method.matricsDNN(predictLabel, testlabel_list, expected_output)
     method.detailAccuracyDNN(predictLabel, testlabel_list, expected_output)
 
 
