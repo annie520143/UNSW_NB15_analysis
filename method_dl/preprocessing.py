@@ -238,6 +238,6 @@ def np_fillna(packets):
     #print("is nan? ", df.isnull().any())
     df.fillna(0, inplace= True)
     #print("is nan? again??? ", df.isnull().any())
-    
+    #print(df.isnull().any())
     packets = df.values
     return packets

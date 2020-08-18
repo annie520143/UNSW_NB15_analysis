@@ -134,7 +134,7 @@ def processed_data(datapath, result_opt):
         #deal with problem of key 'ct_ftp_cmd'
         
         data_np = prep.np_fillna(data_np)
-
+        
 
         return data_np, attcat_np, attcat_list
 
