@@ -170,8 +170,9 @@ def info():
     print('===================================')
 
 
+
 train_path = "../dataset/UNSW-NB15_1_random(2w).csv"
-test_path = "../dataset/2_0w4_1w4_nshf_notime.csv"
+test_path = "../dataset/UNSW-NB15_1_attack(balances).csv"
 
 expected_output = 'attack_cat'
 used_model = 'model/dnn_selfdef1_random.h5'

@@ -141,6 +141,8 @@ def matricsDNN(predict, actual, method):
             cm = cm.reindex(columns = actual_index, fill_value=0)
        
         cm = cm.rename(columns = attack_cat_dict, index = attack_cat_dict)
+
+        cm.to_csv('cm_1.csv')
         print(cm)
         print("=========================") 
 
