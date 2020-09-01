@@ -97,6 +97,16 @@ def simpleDNN_specify(feature_dim, units, atv, loss, output_dim):
     print(matrix_arr)
  """
 
+def comparePredict(predict, actual, method):
+    
+    df = pd.DataFrame(columns = ['actual', 'predict'])
+
+    if method == 'attack_cat':
+        df['actual'] = actual
+        df['predict'] = predict
+        df.to_csv('./exp0831/exp1.csv')
+        
+
 def matricsDNN(predict, actual, method):
     
     if method == 'attack_cat':
