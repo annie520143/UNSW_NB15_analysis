@@ -235,6 +235,6 @@ if __name__ == "__main__":
 
     method.matricsDNN(predictLabel, testlabel_list, expected_output)
     method.detailAccuracyDNN(predictLabel, testlabel_list, expected_output)
-    method.comparePredict(predictLabel, testlabel_list, expected_output)
+    method.comparePredict(test_path, predictLabel, testlabel_list, expected_output)
 
 

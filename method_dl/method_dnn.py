@@ -97,14 +97,16 @@ def simpleDNN_specify(feature_dim, units, atv, loss, output_dim):
     print(matrix_arr)
  """
 
-def comparePredict(predict, actual, method):
+
+def comparePredict(datapath, predict, actual, method):
+    data_df = pd.read_csv(datapath, low_memory=False)
     
-    df = pd.DataFrame(columns = ['actual', 'predict'])
+    
 
     if method == 'attack_cat':
-        df['actual'] = actual
-        df['predict'] = predict
-        df.to_csv('./exp0831/exp1.csv')
+        data_df['actual'] = actual
+        data_df['predict'] = predict
+        data_df.to_csv('./output/exp/exp10.csv', index=False)
         
 
 def matricsDNN(predict, actual, method):
@@ -142,7 +144,7 @@ def matricsDNN(predict, actual, method):
        
         cm = cm.rename(columns = attack_cat_dict, index = attack_cat_dict)
 
-        cm.to_csv('cm_1.csv')
+        cm.to_csv('./output/cm/cm10.csv')
         print(cm)
         print("=========================") 
 
