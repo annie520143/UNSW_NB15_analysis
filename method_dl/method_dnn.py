@@ -54,13 +54,23 @@ def simpleDNN(feature_dim, units, atv, loss):
 #DNN model with dropout
 def simpleDNN_dropout(feature_dim, units, atv, loss, output_dim):
     model = Sequential()
-
-    model.add(Dense(input_dim=feature_dim, units=units,
+    
+    """    model.add(Dense(input_dim=feature_dim, units=128,
         activation = atv))
     
-    model.add(Dropout(0.1, input_shape=(32,)))
+    model.add(Dropout(0.1, input_shape=(128,)))
+    """
+    model.add(Dense(input_dim = feature_dim, units=64,
+        activation = atv)) 
     
-    model.add(Dense(input_dim=feature_dim, units=16,
+    model.add(Dropout(0.1, input_shape=(64,)))
+
+    model.add(Dense(units=32,
+        activation = atv)) 
+    
+    model.add(Dropout(0.1, input_shape=(32,)))
+
+    model.add(Dense(units=16,
         activation = atv)) 
     
     model.add(Dropout(0.1, input_shape=(16,)))
@@ -106,7 +116,7 @@ def comparePredict(datapath, predict, actual, method):
     if method == 'attack_cat':
         data_df['actual'] = actual
         data_df['predict'] = predict
-        data_df.to_csv('./output/exp/exp10.csv', index=False)
+        #data_df.to_csv('./output/exp/exp10.csv', index=False)
         
 
 def matricsDNN(predict, actual, method):
@@ -144,7 +154,7 @@ def matricsDNN(predict, actual, method):
        
         cm = cm.rename(columns = attack_cat_dict, index = attack_cat_dict)
 
-        cm.to_csv('./output/cm/cm10.csv')
+        #cm.to_csv('./output/cm/cm10.csv')
         print(cm)
         print("=========================") 
 

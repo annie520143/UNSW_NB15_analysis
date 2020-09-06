@@ -28,27 +28,37 @@ def init(packets, result_opt):
     #deal with missing
     packets.fillna(value=0, inplace=True)  # fill missing with 0
 
-    packets = prep.proto_to_value(packets)    
-    #packets = prep.state_to_value(packets)   
-    del packets['state'] 
-    packets = prep.service_to_value(packets)
-    #packets, srcip = prep.ip_to_value(packets)
-    
     if(result_opt == 'attack_cat'):
         packets, attack_cat = prep.seperate_att_lab_catagory(packets)
         #if we want to do get specfic
         packets = prep.get_imp(packets)
+
+        try: packets = prep.proto_to_value(packets)
+        except: pass  
+        try: packets = prep.state_to_value(packets)
+        except: pass
+        try: packets = prep.service_to_value(packets)
+        except: pass
+        #packets, srcip = prep.ip_to_value(packets)
+        print(packets.keys())
 
         return packets, attack_cat
     elif(result_opt == 'label'):
         packets, label = prep.seperate_att_lab_label(packets)
         #if we want to do get specfic
         packets = prep.get_imp(packets)
+
+        packets = prep.proto_to_value(packets)    
+        packets = prep.state_to_value(packets)   
+        packets = prep.service_to_value(packets)
+        #packets, srcip = prep.ip_to_value(packets)
         return packets, label
-    
-    
+
+
     
 
+    
+    
 #create np array for label
 def label_to_nparr(label_list):
 
@@ -193,6 +203,7 @@ if __name__ == "__main__":
     feature_dim = train_np.shape[1] # how mant features
 
     print(train_np.shape)
+    print(feature_dim)
 
     # simpleDNN_dropout(feature_dim, units, atv, loss)
     if(expected_output == 'label'):
