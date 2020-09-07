@@ -32,6 +32,7 @@ def init(packets, result_opt):
         packets, attack_cat = prep.seperate_att_lab_catagory(packets)
         #if we want to do get specfic
         packets = prep.get_imp(packets)
+        packets = prep.add_sd_feature(packets)
 
         try: packets = prep.proto_to_value(packets)
         except: pass  
@@ -39,8 +40,10 @@ def init(packets, result_opt):
         except: pass
         try: packets = prep.service_to_value(packets)
         except: pass
+
+        
         #packets, srcip = prep.ip_to_value(packets)
-        print(packets.keys())
+        #print(packets.keys())
 
         return packets, attack_cat
     elif(result_opt == 'label'):
@@ -123,18 +126,15 @@ def processed_data(datapath, result_opt):
     
     if(result_opt == 'attack_cat'):
         data_df, attcat_list = init(data_df, result_opt)
-        #print("1 ", type(data_srcip))
 
         del data_df['attack_cat']
         del data_df['Label']
 
         #transforming datatype
         data_df_transtype = prep.trans_datatype(data_df)
-        #print("2 ", type(data_df))
 
         #scaling (data type changes after scaling, i.e. df -> np)
         data_df_scale = prep.feature_scaling(data_df_transtype)
-        #print("3 ", type(data_df))
 
         #create an one-hot list for label list
         attcat_list_oneHot = attackcat_to_nparr(attcat_list)
@@ -156,11 +156,9 @@ def processed_data(datapath, result_opt):
 
         #transforming datatype
         data_df_transtype = prep.trans_datatype(data_df)
-        #print("2 ", type(data_df))
 
         #scaling (data type changes after scaling, i.e. df -> np)
         data_df_scale = prep.feature_scaling(data_df_transtype)
-        #print("3 ", type(data_df))
 
         #create an one-hot list for label list
         datalabel_list_oneHot = label_to_nparr(label_list)
@@ -202,7 +200,6 @@ if __name__ == "__main__":
     dataset_size = train_np.shape[0]  # how many data
     feature_dim = train_np.shape[1] # how mant features
 
-    print(train_np.shape)
     print(feature_dim)
 
     # simpleDNN_dropout(feature_dim, units, atv, loss)
