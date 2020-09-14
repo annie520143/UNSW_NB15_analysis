@@ -55,12 +55,12 @@ def simpleDNN(feature_dim, units, atv, loss):
 def simpleDNN_dropout(feature_dim, units, atv, loss, output_dim):
     model = Sequential()
     
-    """    model.add(Dense(input_dim=feature_dim, units=128,
+    """model.add(Dense(input_dim=feature_dim, units=128,
         activation = atv))
     
-    model.add(Dropout(0.1, input_shape=(128,)))
-    """
-    model.add(Dense(input_dim = feature_dim, units=64,
+    model.add(Dropout(0.1, input_shape=(128,)))"""
+    
+    model.add(Dense(input_dim=feature_dim, units=64,
         activation = atv)) 
     
     model.add(Dropout(0.1, input_shape=(64,)))

@@ -1,11 +1,11 @@
 import pandas as pd
 
-#csv_file_1 = ['UNSW-NB15_1.csv']
-csv_file = ['UNSW-NB15_1.csv', 'UNSW-NB15_2.csv', 'UNSW-NB15_4.csv']
+#csv_file = ['./UNSW-NB15_1.csv']
+csv_file = ['UNSW-NB15_3.csv', 'UNSW-NB15_2.csv', 'UNSW-NB15_4.csv']
 
-df_ref = pd.read_csv('UNSW-NB15_1_random(2w).csv', low_memory=False)
+df_ref = pd.read_csv(csv_file[0], low_memory=False)
 cnt0, cnt1, cnt2, cnt3, cnt4, cnt5, cnt6, cnt7, cnt8, cnt9 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-threshold = 500
+threshold = 2000
 
 
 
@@ -13,19 +13,20 @@ df = []
 
 for file in csv_file:
     df_temp = pd.read_csv(file, low_memory=False)
+    df_temp.fillna(value=0, inplace=True)
     attack_cat = df_temp['attack_cat'].to_numpy()
     label = df_temp['Label'].to_numpy()
 
-    for i, ele in enumerate(label):
+    """for i, ele in enumerate(label):
         if ele == 0:
             cnt0 = cnt0+1
             if cnt0 > threshold:
                 continue
-            df.append(list(df_temp.iloc[i, :]))
+            df.append(list(df_temp.iloc[i, :]))"""
 
     for i, ele in enumerate(attack_cat):
 
-        if ele == 'Fuzzers':
+        """if ele == 'Fuzzers':
             cnt1 = cnt1+1
             if cnt1 > threshold:
                 continue
@@ -41,9 +42,9 @@ for file in csv_file:
             cnt3 = cnt3+1
             if cnt3 > threshold:
                 continue
-            df.append(list(df_temp.iloc[i, :]))
+            df.append(list(df_temp.iloc[i, :]))"""
 
-        elif ele == 'DoS':
+        if ele == 'DoS':
             cnt4 = cnt4+1
             if cnt4 > threshold:
                 continue
@@ -55,7 +56,7 @@ for file in csv_file:
                 continue
             df.append(list(df_temp.iloc[i, :]))
 
-        elif ele == 'Generic':
+        """elif ele == 'Generic':
             cnt6 = cnt6+1
             if cnt6 > threshold:
                 continue
@@ -65,9 +66,9 @@ for file in csv_file:
             cnt7 = cnt7+1
             if cnt7 > threshold:
                 continue
-            df.append(list(df_temp.iloc[i, :]))
+            df.append(list(df_temp.iloc[i, :]))"""
 
-        elif ele == 'Shellcode':
+        """elif ele == 'Shellcode':
             cnt8  = cnt8+1
             if cnt8 > threshold:
                 continue
@@ -77,7 +78,8 @@ for file in csv_file:
             cnt9 = cnt9+1
             if cnt9 > threshold:
                 continue
-            df.append(list(df_temp.iloc[i, :]))
-
+            df.append(list(df_temp.iloc[i, :]))"""
+#print(df)
 df = pd.DataFrame(df, columns=df_ref.keys())
-df.to_csv('UNSW-NB15_1_attack(balances).csv', index=False)
+print(df)
+df.to_csv('4,5_train.csv', index=False)

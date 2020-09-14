@@ -32,7 +32,7 @@ def init(packets, result_opt):
         packets, attack_cat = prep.seperate_att_lab_catagory(packets)
         #if we want to do get specfic
         packets = prep.get_imp(packets)
-        packets = prep.add_sd_feature(packets)
+        #packets = prep.add_sd_feature(packets)
 
         try: packets = prep.proto_to_value(packets)
         except: pass  
@@ -43,7 +43,7 @@ def init(packets, result_opt):
 
         
         #packets, srcip = prep.ip_to_value(packets)
-        #print(packets.keys())
+        print(packets.keys())
 
         return packets, attack_cat
     elif(result_opt == 'label'):
@@ -56,9 +56,6 @@ def init(packets, result_opt):
         packets = prep.service_to_value(packets)
         #packets, srcip = prep.ip_to_value(packets)
         return packets, label
-
-
-    
 
     
     
@@ -79,14 +76,15 @@ def attackcat_to_nparr_specify(label_list):
 
     label_np = []
     for i in range (label_list.shape[0]):
-        if(label_list[i] == 5):
-            label_np.append([1, 0, 0, 0])
-        elif(label_list[i] == 6):
-            label_np.append([0, 1, 0, 0])
-        elif(label_list[i] == 7):
+        x = label_list[i]
+        if(x == 4):
+            label_np.append([1, 0])
+        elif(x == 5):
+            label_np.append([0, 1])
+        """elif(label_list[i] == 6):
                 label_np.append([0, 0, 1, 0])
-        elif(label_list[i] == 8):
-            label_np.append([0, 0, 0, 1])
+        elif(label_list[i] == 7):
+            label_np.append([0, 0, 0, 1])"""
         
     return label_np
 
@@ -137,7 +135,7 @@ def processed_data(datapath, result_opt):
         data_df_scale = prep.feature_scaling(data_df_transtype)
 
         #create an one-hot list for label list
-        attcat_list_oneHot = attackcat_to_nparr(attcat_list)
+        attcat_list_oneHot = attackcat_to_nparr_specify(attcat_list)
 
         #turn dataframe and list to np array
         attcat_np, data_np = np.array(attcat_list_oneHot), np.array(data_df_scale)
@@ -179,8 +177,8 @@ def info():
 
 
 
-train_path = "../dataset/UNSW-NB15_1_random(2w).csv"
-test_path = "../dataset/UNSW-NB15_1_attack(balances).csv"
+train_path = "../dataset/4,5_train.csv"
+test_path = "../dataset/4,5_test.csv"
 
 expected_output = 'attack_cat'
 used_model = 'model/dnn_selfdef1_random.h5'
@@ -206,7 +204,7 @@ if __name__ == "__main__":
     if(expected_output == 'label'):
         model = method.simpleDNN_dropout(feature_dim, 32, 'relu', 'mse', 2)
     elif(expected_output == 'attack_cat'):
-        model = method.simpleDNN_dropout(feature_dim, 32, 'relu', 'mse', 10)
+        model = method.simpleDNN_dropout(feature_dim, 32, 'relu', 'mse', 2)
 
     # Setting callback functions
     csv_logger = CSVLogger('training.log')
@@ -221,6 +219,7 @@ if __name__ == "__main__":
                                 verbose=1,
                                 mode='max')
 
+    print(trainlabel_np.shape)
     
     #training
     model.fit(train_np, trainlabel_np, batch_size=100, epochs=100, callbacks=[

@@ -3,20 +3,17 @@ from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import pandas as pd
 
-all_features = ['sport', 'dsport', 'dur', 'proto','state','sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss',  'service','Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl','ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
-
+all_features = ['sport', 'dsport', 'dur', 'proto','state','sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss',  'service','Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit' ,'Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl','ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
 #全部feature 不含srcip dstip
 imp_features = ['sport', 'dsport', 'proto',  'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'smeansz', 'dmeansz', 'Sjit', 'Djit', 'Stime', 'Ltime', 'Sintpkt', 'Dintpkt', 'is_sm_ips_ports', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
-
-sd_features = ['sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'Sload', 'Dload',
-'Spkts', 'Dpkts', 'swin', 'dwin', 'smeansz', 'dmeansz', 'Sjit', 'Djit', 'Sintpkt', 'Dintpkt']
-
+#部分feature 不含srcip dstip
+imp_features2 = ['sport', 'dsport', 'proto',  'dur', 'sbytes', 'dbytes', 'sttl', 'dttl',  'service', 'Spkts', 'Dpkts', 'swin', 'dwin', 'stcpb', 'dtcpb', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'is_sm_ips_ports', 'ct_flw_http_mthd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
 http_features = ['srcip', 'sport', 'dstip', 'dsport', 'proto', 'dur', 'ct_dst_ltm', 'ct_src_ ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'Label', 'attack_cat']
-proto = ['tcp', 'udp', 'arp', 'ospf', 'ip', 'icmp', 'unas']
-states = ['FIN', 'CON', 'REQ', 'URH', 'ACC', 'CLO',  'ECO', 'ECR',
-'INT', 'MAS', 'PAR',  'RST', 'TST', 'TXD',  'URN', 'RSTO', ]
-#states = 
 
+paper_features = ['proto','state','dbytes', 'sttl', 'dttl', 'sloss', 'dloss',  'service','Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin','stcpb', 'smeansz', 'Djit', 'synack' 'is_sm_ips_ports', 'ct_state_ttl', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
+
+proto = ['tcp', 'udp', 'arp', 'ospf', 'ip', 'icmp', 'unas']
+states = ['FIN', 'CON', 'REQ', 'URH', 'ACC', 'CLO',  'ECO', 'ECR','INT', 'MAS', 'PAR',  'RST', 'TST', 'TXD',  'URN', 'RSTO', ]
 service = ['dns', 'smtp', 'http', 'ftp', 'ftp-data', 'pop3', 'ssh', 'dhcp', 'ssl', 'snmp', 'radius', 'irc']
 
 
@@ -50,6 +47,7 @@ def seperate_att_lab_catagory(packets):
 
     #label = packets['Label'].to_numpy()
     packets['attack_cat'] = attack_cat
+    
 
     return packets, attack_cat
 
@@ -182,7 +180,7 @@ def get_http(packets):
 
 
 def get_imp(packets):
-    imp_features_n = len(all_features) 
+    imp_features_n = len(all_features)
     cnt = 0
 
     packets_imp = packets.copy()
@@ -199,21 +197,17 @@ def get_imp(packets):
 
     return packets_imp
 
-def add_sd_feature(packets):
-    sd_features_n = int(len(sd_features) / 2)
 
-    packets_sd = packets.copy()
-    for i in range(sd_features_n):
-        s_tar = sd_features[2*i]
-        d_tar = sd_features[2*i+1]
+def del_tcp_features(packets):
+    del packets['swin']
+    del packets['dwin']
+    del packets['stcpb']
+    del packets['dtcpb']
+    del packets['tcprtt']
+    del packets['synack']
+    del packets['ackdat']
 
-        tar = 'avg_' + s_tar[1:]
-
-        packets_sd[tar] = (packets_sd[s_tar] + packets_sd[d_tar]) / 2
-        del packets_sd[s_tar]
-        del packets_sd[d_tar]
-                
-    return packets_sd
+    return packets
 
 #normalization
 def feature_scaling(packets):
