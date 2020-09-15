@@ -30,9 +30,11 @@ def init(packets, result_opt):
 
     if(result_opt == 'attack_cat'):
         packets, attack_cat = prep.seperate_att_lab_catagory(packets)
+        
         #if we want to do get specfic
         packets = prep.get_imp(packets)
-        packets = prep.add_sd_feature(packets)
+        #packets = prep.div_sd_feature(packets)
+        #packets = prep.add_sd_feature(packets)
 
         try: packets = prep.proto_to_value(packets)
         except: pass  
@@ -57,10 +59,6 @@ def init(packets, result_opt):
         #packets, srcip = prep.ip_to_value(packets)
         return packets, label
 
-
-    
-
-    
     
 #create np array for label
 def label_to_nparr(label_list):
@@ -179,8 +177,8 @@ def info():
 
 
 
-train_path = "../dataset/UNSW-NB15_1_random(2w).csv"
-test_path = "../dataset/UNSW-NB15_1_attack(balances).csv"
+train_path = "../dataset/label2,3,4,5,6.csv"
+test_path = "../dataset/label2,3,4,5,6_test.csv"
 
 expected_output = 'attack_cat'
 used_model = 'model/dnn_selfdef1_random.h5'

@@ -3,10 +3,11 @@ from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import pandas as pd
 
-all_features = ['sport', 'dsport', 'dur', 'proto','state','sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss',  'service','Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl','ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
+# all feature, except srcip dstip
+all_features = ['sport', 'dsport', 'proto', 'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'stcpb', 'dtcpb', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Stime', 'Ltime', 'Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
 
-#全部feature 不含srcip dstip
-imp_features = ['sport', 'dsport', 'proto',  'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'smeansz', 'dmeansz', 'Sjit', 'Djit', 'Stime', 'Ltime', 'Sintpkt', 'Dintpkt', 'is_sm_ips_ports', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
+# no srcip dstip, stcpb dtcpb, dur, Stime, Ltime, tcprtt, synack, ackdat
+imp_features = ['sport', 'dsport', 'proto', 'state', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Sintpkt', 'Dintpkt', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
 
 sd_features = ['sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'Sload', 'Dload',
 'Spkts', 'Dpkts', 'swin', 'dwin', 'smeansz', 'dmeansz', 'Sjit', 'Djit', 'Sintpkt', 'Dintpkt']
@@ -182,13 +183,12 @@ def get_http(packets):
 
 
 def get_imp(packets):
-    imp_features_n = len(all_features) 
-    cnt = 0
+    imp_features_n = len(imp_features) 
 
     packets_imp = packets.copy()
     for col in (packets_imp.columns):
         for i in range(imp_features_n):
-            tar = all_features[i]
+            tar = imp_features[i]
             #important features, check the next column
             if (col == tar):
                 break
@@ -213,6 +213,27 @@ def add_sd_feature(packets):
         del packets_sd[s_tar]
         del packets_sd[d_tar]
                 
+    return packets_sd
+
+
+def div_sd_feature(packets):
+    sd_features_n = int(len(sd_features) / 2)
+
+    packets_sd = packets.copy()
+    for i in range(sd_features_n):
+        s_tar = sd_features[2*i]
+        d_tar = sd_features[2*i+1]
+
+        tar = 'div_' + s_tar[1:]
+
+        try:
+            packets_sd[tar] = packets_sd[d_tar]/packets_sd[s_tar]
+        except: 
+            packets_sd[tar] = 0
+
+        del packets_sd[s_tar]
+        del packets_sd[d_tar]
+
     return packets_sd
 
 #normalization
