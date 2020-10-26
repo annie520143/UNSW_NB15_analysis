@@ -16,16 +16,24 @@ from keras.optimizers import SGD, Adam
 attack_cat_dict = {
                 0: 'Nor',       
                 1 : 'Fuz', 
-                2 : 'Analy', 
+                2 : 'Ana',
                 3 : 'Bd', 
-                4 : 'DoS', 
-                5 : 'Explo', 
+                4 : 'Dos',
+                5 : 'Exp', 
                 6 : 'Ge', 
-                7 : 'Recon', 
-                8 : 'Shell', 
+                7 : 'Re', 
+                8 : 'Sh',
                 9 : 'Worms'
-                }
-attack_cat = ['Normal', 'Fuzzers', 'Analysis', 'Backdoors', 'DoS', 'Exploits', 'Generic', 'Reconnaissance', 'Shellcode', 'Worms']
+} 
+
+label_dict = {
+            0: 'Normal',
+            1: 'Attack'
+}
+
+#attack_cat = ['Normal', 'Fuzzers', 'Analysis', 'Backdoors', 'DoS', 'Exploits', 'Generic', 'Reconnaissance', 'Shellcode', 'Worms']
+attack_cat = ['Nor', 'Fuz', 'Ana', 'Bd', 'Dos', 'Exp', 'Ge', 'Re', 'Sh', 'Worms']
+#attack_cat = ['Nor', 'Ana', 'Bd','Dos', 'Ge', 'Re', 'Sh', 'Worms']
 
 label_dict = {
                 0: 'Normal',       
@@ -110,63 +118,72 @@ def simpleDNN_specify(feature_dim, units, atv, loss, output_dim):
 
 def comparePredict(datapath, predict, actual, method):
     data_df = pd.read_csv(datapath, low_memory=False)
-    
-    
-
     if method == 'attack_cat':
         data_df['actual'] = actual
         data_df['predict'] = predict
-        #data_df.to_csv('./output/exp/exp10.csv', index=False)
+        data_df.to_csv('./output/exp/exp_no_fux_exp.csv', index=False)
         
 
-def matricsDNN(predict, actual, method):
+def matricsDNN(predict, actual, method, dim):
     
+    
+    print("=========================")
+    cm = pd.crosstab(actual, predict, rownames=['actual'], colnames=['predict'],dropna=False)
+    actual_index = cm.columns.tolist()
+    predict_index = cm.index.tolist()
+
+
+    for i in range(dim):
+        if(len(predict_index) == dim):
+            if(predict_index[i] != i):
+                predict_index.insert(i, i)
+        elif(len(predict_index) <= dim):
+            if(len(predict_index) <= i ):
+                predict_index.insert(i, i)
+            elif(predict_index[i] != i):
+                predict_index.insert(i, i)
+        
+        #cm = cm[~cm.index.duplicate()]
+        cm = cm.reindex(index=predict_index, fill_value=0)
+
+        if(len(actual_index) == dim):
+            if(actual_index[i] != i):
+                actual_index.insert(i, i)
+        elif(len(actual_index) <= dim):           
+            if(len(actual_index) <= i):               
+                actual_index.insert(i, i)
+            elif(actual_index[i] != i):
+                actual_index.insert(i, i)
+        
+        cm = cm.reindex(columns = actual_index, fill_value=0)
+
     if method == 'attack_cat':
-        print("=========================")
-        cm = pd.crosstab(actual, predict, rownames=['actual'], colnames=['predict'],dropna=False)
-        actual_index = cm.columns.tolist()
-        predict_index = cm.index.tolist()
-        #print(predict_index, actual_index)
-
-        for i in range(10):
-            if(len(predict_index) == 10):
-                if(predict_index[i] != i):
-                    predict_index.insert(i, i)
-            elif(len(predict_index) <= 10):
-                if(len(predict_index) <= i ):
-                    predict_index.insert(i, i)
-                elif(predict_index[i] != i):
-                    predict_index.insert(i, i)
-            
-            #cm = cm[~cm.index.duplicate()]
-            cm = cm.reindex(index=predict_index, fill_value=0)
-
-            if(len(actual_index) == 10):
-                if(actual_index[i] != i):
-                    actual_index.insert(i, i)
-            elif(len(actual_index) <= 10):           
-                if(len(actual_index) <= i):               
-                    actual_index.insert(i, i)
-                elif(actual_index[i] != i):
-                    actual_index.insert(i, i)
-            
-            cm = cm.reindex(columns = actual_index, fill_value=0)
-       
         cm = cm.rename(columns = attack_cat_dict, index = attack_cat_dict)
+    elif method == 'label':
+        cm = cm.rename(columns = label_dict, index = label_dict)
 
-        #cm.to_csv('./output/cm/cm10.csv')
-        print(cm)
-        print("=========================") 
+    #cm.to_csv('./output/cm/cm10.csv')
+    print(cm)
+    print("=========================") 
+    
 
 
 
 
-def detailAccuracyDNN(predict, actual, method):
+def detailAccuracyDNN(predict, actual, method, dim):
     n = len(predict)
     #bad_index_list = []
-    total = [0 for i in range(10)]
-    x = [0 for i in range(10)]
+    #print("output dim = ", dim)
+
+    """ if dim <= 10:
+        temp_dim = 10
+    else:
+        temp_dim = dim """
+
+    total = [0 for i in range(dim)]
+    x = [0 for i in range(dim)]
     att_accuracy = 0
+
 
 
     for i, value in enumerate (actual):
@@ -177,10 +194,11 @@ def detailAccuracyDNN(predict, actual, method):
             x[value] = x[value]+1
     
     attack_n = n - total[0]
+    
     #print("attack_cat len:", len(attack_cat))
 
     if(method == 'attack_cat'):
-        for index in range(10):
+        for index in range(dim):
             print("==========================")
             
             print(index, attack_cat[index], ': ','predict: ', x[index], 'total: ', total[index])
@@ -190,12 +208,15 @@ def detailAccuracyDNN(predict, actual, method):
                 acc = 0.0
                 
             print("acc: ", acc)
+
             rate = total[index]/attack_n
+
             if index != 0:
                 att_accuracy = att_accuracy + rate*acc
         
         print("=============================")
         print('attack accuracy: ', att_accuracy)
+       
 
         
     elif(method == 'label'):

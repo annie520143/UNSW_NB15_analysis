@@ -4,10 +4,11 @@ import numpy as np
 import pandas as pd
 
 # all feature, except srcip dstip
-all_features = ['sport', 'dsport', 'proto', 'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'stcpb', 'dtcpb', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Stime', 'Ltime', 'Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
+all_features = ['sport', 'dsport', 'proto', 'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'stcpb', 'dtcpb', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Stime', 'Ltime','Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
 
-# no srcip dstip, stcpb dtcpb, dur, Stime, Ltime, tcprtt, synack, ackdat
-imp_features = ['sport', 'dsport', 'proto', 'state', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Sintpkt', 'Dintpkt', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
+# 
+imp_features = ['sport', 'dsport', 'proto', 'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'stcpb', 'dtcpb', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Stime', 'Ltime',
+                'Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
 
 paper_features = ['proto','state','dbytes', 'sttl', 'dttl', 'sloss', 'dloss',  'service','Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin','stcpb', 'smeansz', 'Djit', 'synack' 'is_sm_ips_ports', 'ct_state_ttl', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attack_cat', 'Label']
 
@@ -50,8 +51,12 @@ def seperate_att_lab_catagory(packets):
 
     return packets, attack_cat
 
-def seperate_att_lab_label(packets):
-    
+def seperate_att_lab_kmeans(packets):
+    kmeans_label = packets['kmeans_label'].to_numpy()
+    return packets, kmeans_label
+
+
+def seperate_att_lab_label(packets):  
     label = packets['Label'].to_numpy()
     return packets, label
 
@@ -157,7 +162,7 @@ def ip_to_value(packets):
 
     return packets, srcip_list, dstip_list
     
-
+"""
 #important features
 def get_http(packets):
     http_features_n = len(http_features)
@@ -176,7 +181,7 @@ def get_http(packets):
                 del packets_http[col]
 
     return packets_http
-
+"""
 
 def get_imp(packets):
     imp_features_n = len(imp_features) 
@@ -196,14 +201,12 @@ def get_imp(packets):
     return packets_imp
 
 
-def del_tcp_features(packets):
-    del packets['swin']
-    del packets['dwin']
-    del packets['stcpb']
-    del packets['dtcpb']
-    del packets['tcprtt']
-    del packets['synack']
-    del packets['ackdat']
+def del_useless_features(packets):
+    del packets['attack_cat']
+    del packets['Label']
+    """ del packets['kmeans_label']
+    del packets['dbscan_label']
+    del packets['manual_label'] """
 
     return packets
 
