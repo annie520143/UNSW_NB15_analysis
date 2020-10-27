@@ -17,7 +17,7 @@ oneHotDict = {
 'service' : ['dns', 'smtp', 'http', 'ftp', 'ftp-data', 'pop3', 'ssh', 'dhcp', 'ssl', 'snmp', 'radius', 'irc']
 }
 
-attackCat = ['[\s]?A(.)*', '[\s]?B(.)*', '[\s]?D(.)*', '[\s]?E(.)*', '[\s]?G(.)*', '[\s]?R(.)*', '[\s]?S(.)*', '[\s]?W(.)*']
+attackCat = [r'[\s]?F(.)*', r'[\s]?A(.)*', r'[\s]?B(.)*', r'[\s]?D(.)*', r'[\s]?E(.)*', r'[\s]?G(.)*', r'[\s]?R(.)*', r'[\s]?S(.)*', r'[\s]?W(.)*']
 
 
 def SeperateAttackLabel(packets):
@@ -38,15 +38,19 @@ def SeperateAttackLabel(packets):
                 if value == 0:
                     newAttackCat.append(0)
                 else:
+                    
                     newAttackCat.append(i+1)
 
-                if(i != 0):
+                if(value != 0):
                     newLabel.append(1)
                 else:
                     newLabel.append(0)
-
+    
     del packets['attack_cat']
     del packets['Label']
+    newAttackCat = np.array(newAttackCat)
+    newLabel = np.array(newLabel)
+
 
     return packets, newAttackCat, newLabel
 

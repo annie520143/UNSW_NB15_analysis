@@ -40,30 +40,30 @@ def ProcessData(datapath, opt):
     
     packets.fillna(value=0, inplace=True)
 
-    packets, attack_cat, label = prep.SeperateAttackLabel(packets)
+    packets, attackCat, label = prep.SeperateAttackLabel(packets)
+    
 
     packets = prep.GetImp(packets)
     packets = prep.FeatureOneHot(packets)
-
-
     #transforming datatype
     packets = prep.TransDatatype(packets)
-
     #scaling (data type changes after scaling, i.e. df -> np)
     packetScaled = prep.FeatureScaling(packets)
 
-    #create an one-hot list for label list
-    attcatOneHot = CategoryOneHot(attack_cat,opt)
-
-    #turn dataframe and list to np array
-    attcat_np, packets_np = np.array(attcatOneHot), np.array(packetScaled)
+    if(opt == "attack_cat"):
         
-    #deal with problem of key 'ct_ftp_cmd'
-    packets_np = prep.NpFillna(packets_np)
+        attackCatOneHot = CategoryOneHot(attackCat,opt)       
+        attackCatNP, packetsNP = np.array(attackCatOneHot), np.array(packetScaled)
+        packetsNP = prep.NpFillna(packetsNP)
+        return packetsNP, attackCatNP, attackCat
 
-    #print(packets_np)
+    elif(opt == "label"):
+        labelOneHot = CategoryOneHot(label, opt)
+        labelNP, packetsNP= np.array(labelOneHot), np.array(packetScaled)
+        packetsNP = prep.NpFillna(packetsNP)
+        return packetsNP, labelNP, label
 
-    return packets_np, attcat_np, attack_cat
+
 
 def info():
     print('Basic info:')
@@ -73,8 +73,8 @@ def info():
     print('===================================')
 
 
-trainPath = "../dataset/1_1-2_label0_time.csv"
-testPath = "../dataset/1_10-18_mix_time.csv"
+trainPath = "../dataset/1_0-1_mix_time.csv"
+testPath = "../dataset/1_1-2_mix_time.csv"
 
 opt = 'attack_cat'
 usedModel = 'model/dnn_selfdef1_random.h5'
@@ -84,15 +84,16 @@ if __name__ == "__main__":
 
 
     #label depends on expected_output
-    train_np, trainlabel_np, trainlabel_list = ProcessData(trainPath, opt)
-    test_np, testlabel_np, testlabel_list = ProcessData(testPath, opt)
+    trainNP, trainlabelNP, trainlabelList = ProcessData(trainPath, opt)
+    testNP, testlabelNP, testlabelList = ProcessData(testPath, opt)
+    
 
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
 
-    dataset_size = train_np.shape[0]  # how many data
-    feature_dim = train_np.shape[1] # how mant features
-    output_dim = trainlabel_np.shape[1]
+    dataset_size = trainNP.shape[0]  # how many data
+    feature_dim = trainNP.shape[1] # how mant features
+    output_dim = trainlabelNP.shape[1]
 
 
     # simpleDNN_dropout(feature_dim, units, atv, loss)
@@ -115,25 +116,25 @@ if __name__ == "__main__":
                                 mode='max')
     
     #training
-    model.fit(train_np, trainlabel_np, batch_size=100, epochs=100, callbacks=[earlystopping, checkpoint, csv_logger], shuffle=True)
+    model.fit(trainNP, trainlabelNP, batch_size=100, epochs=100, callbacks=[earlystopping, checkpoint, csv_logger], shuffle=True)
    
     #traing result
-    result = model.evaluate(train_np,  trainlabel_np)
+    result = model.evaluate(trainNP,  trainlabelNP)
     print("training accuracy = ", result[1])
 
     model = ks.load_model(usedModel)
     #print(model.summary())
     
     #testing result
-    result = model.evaluate(test_np,  testlabel_np)
+    result = model.evaluate(testNP,  testlabelNP)
     print("testing accuracy = ", result[1])
     
     #predict result
-    predictLabel = model.predict_classes(test_np)
+    predictLabel = model.predict_classes(testNP)
     
-    method.matricsDNN(predictLabel, testlabel_list, opt, output_dim)
-    method.detailAccuracyDNN(predictLabel, testlabel_list, opt, output_dim)
-    #method.comparePredict(test_path, predictLabel, testlabel_list, expected_output )
+    method.matricsDNN(predictLabel, testlabelList, opt, output_dim)
+    method.detailAccuracyDNN(predictLabel, testlabelList, opt, output_dim)
+    #method.comparePredict(test_path, predictLabel, testlabelList, expected_output )
 
     #np.set_printoptions(threshold=sys.maxsize)
 

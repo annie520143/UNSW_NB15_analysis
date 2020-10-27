@@ -11,7 +11,7 @@ from keras.layers.normalization import BatchNormalization
 from keras.layers.core import Activation, Dense, Dropout
 from keras.layers.recurrent import LSTM
 from keras.optimizers import SGD, Adam
-#from sklearn.metrics import confusion_matrix
+
 
 attack_cat_dict = {
                 0: 'Nor',       
@@ -111,6 +111,8 @@ def matricsDNN(predict, actual, method, dim):
     
     
     print("=========================")
+
+    #index and column for the crosstab must have type numpy.ndarray
     cm = pd.crosstab(actual, predict, rownames=['actual'], colnames=['predict'],dropna=False)
     actual_index = cm.columns.tolist()
     predict_index = cm.index.tolist()
