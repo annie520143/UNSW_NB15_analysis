@@ -57,7 +57,7 @@ def FeatureOneHot(packets):
             data = packets[feature]
             for element in feature:
 
-            tempList = []
+                tempList = []
             for d in data:
                 if (d == element):
                     tempList.append(1)

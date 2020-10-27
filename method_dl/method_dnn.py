@@ -33,12 +33,7 @@ label_dict = {
 
 #attack_cat = ['Normal', 'Fuzzers', 'Analysis', 'Backdoors', 'DoS', 'Exploits', 'Generic', 'Reconnaissance', 'Shellcode', 'Worms']
 attack_cat = ['Nor', 'Fuz', 'Ana', 'Bd', 'Dos', 'Exp', 'Ge', 'Re', 'Sh', 'Worms']
-#attack_cat = ['Nor', 'Ana', 'Bd','Dos', 'Ge', 'Re', 'Sh', 'Worms']
 
-label_dict = {
-                0: 'Normal',       
-                1: 'Attack'
-            }
 label = ['Normal', 'Attack']
 
 #DNN model
@@ -110,18 +105,6 @@ def simpleDNN_specify(feature_dim, units, atv, loss, output_dim):
 
     return model
 
-""" def matricsDNN(predict, actual):
-    matrix_arr = confusion_matrix(actual, predict)
-    print(matrix_arr)
- """
-
-
-def comparePredict(datapath, predict, actual, method):
-    data_df = pd.read_csv(datapath, low_memory=False)
-    if method == 'attack_cat':
-        data_df['actual'] = actual
-        data_df['predict'] = predict
-        data_df.to_csv('./output/exp/exp_no_fux_exp.csv', index=False)
         
 
 def matricsDNN(predict, actual, method, dim):
@@ -167,23 +150,12 @@ def matricsDNN(predict, actual, method, dim):
     print("=========================") 
     
 
-
-
-
 def detailAccuracyDNN(predict, actual, method, dim):
     n = len(predict)
-    #bad_index_list = []
-    #print("output dim = ", dim)
-
-    """ if dim <= 10:
-        temp_dim = 10
-    else:
-        temp_dim = dim """
 
     total = [0 for i in range(dim)]
     x = [0 for i in range(dim)]
     att_accuracy = 0
-
 
 
     for i, value in enumerate (actual):
