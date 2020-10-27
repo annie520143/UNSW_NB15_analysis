@@ -95,22 +95,6 @@ def label_to_nparr(label_list):
     
     return label_np
 
-#create np array for label
-def attackcat_to_nparr_specify(label_list):
-
-    label_np = []
-    for i in range (label_list.shape[0]):
-        x = label_list[i]
-        if(x == 4):
-            label_np.append([1, 0])
-        elif(x == 5):
-            label_np.append([0, 1])
-        """elif(label_list[i] == 6):
-                label_np.append([0, 0, 1, 0])
-        elif(label_list[i] == 7):
-            label_np.append([0, 0, 0, 1])"""
-        
-    return label_np
 
 
 def processed_data(datapath, result_opt):
@@ -140,7 +124,7 @@ def processed_data(datapath, result_opt):
     elif(result_opt == 'label'):
         data_df, label_list = init(data_df, result_opt)
         data_df = prep.del_useless_features(data_df)
-        # ; print(data_df.keys())
+        
 
         #transforming datatype
         data_df_transtype = prep.trans_datatype(data_df)

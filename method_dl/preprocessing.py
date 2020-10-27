@@ -16,6 +16,8 @@ proto = ['tcp', 'udp', 'arp', 'ospf', 'ip', 'icmp', 'unas']
 states = ['FIN', 'CON', 'REQ', 'URH', 'ACC', 'CLO',  'ECO', 'ECR','INT', 'MAS', 'PAR',  'RST', 'TST', 'TXD',  'URN', 'RSTO', ]
 service = ['dns', 'smtp', 'http', 'ftp', 'ftp-data', 'pop3', 'ssh', 'dhcp', 'ssl', 'snmp', 'radius', 'irc']
 
+oneHotFeatures = []
+
 
 def seperate_att_lab_catagory(packets):
 
@@ -51,15 +53,14 @@ def seperate_att_lab_catagory(packets):
 
     return packets, attack_cat
 
-def seperate_att_lab_kmeans(packets):
-    kmeans_label = packets['kmeans_label'].to_numpy()
-    return packets, kmeans_label
-
 
 def seperate_att_lab_label(packets):  
     label = packets['Label'].to_numpy()
     return packets, label
 
+#one hot encoding
+def one_hot_encoding(packets):
+    
 
 def proto_to_value(packets):
     """ proto = []
@@ -131,58 +132,6 @@ def service_to_value(packets):
     
 
 
-def ip_to_value(packets):
-    #ip is stored as string
-    #print(type(packets.loc[1]['srcip']))
-
-    n = len(packets)
-
-    srcip = packets['srcip']
-    dstip = packets['dstip']
-
-    srcip1, srcip2, dstip1, dstip2 = [], [], [], []
-
-    for i in range(n):
-
-        srcip_split = srcip[i].split(".")
-        dstip_split = dstip[i].split(".")
-
-        srcip1.append(int(srcip_split[0], base=10))
-        srcip2.append(int(srcip_split[1], base=10))
-
-        dstip1.append(int(dstip_split[0], base=10))
-        dstip2.append(int(dstip_split[1], base=10))
-
-    packets['srcip1'], packets['srcip2'] = srcip1, srcip2
-    packets['dstip1'], packets['dstip2'] = dstip1, dstip2
-
-    del packets['srcip'], packets['dstip']
-    srcip_list = srcip.tolist()
-    dstip_list = dstip.tolist()
-
-    return packets, srcip_list, dstip_list
-    
-"""
-#important features
-def get_http(packets):
-    http_features_n = len(http_features)
-    #cnt = 0
-
-    packets_http = packets.copy()
-    for col in (packets_http.columns):
-        for i in range(http_features_n):
-
-            #important features, check the next column
-            if (col == http_features[i]):
-                break
-
-            #no important features match, and last feature has been checked
-            elif ((col != http_features[i]) & (i == http_features_n-1)):
-                del packets_http[col]
-
-    return packets_http
-"""
-
 def get_imp(packets):
     imp_features_n = len(imp_features) 
 
@@ -204,32 +153,12 @@ def get_imp(packets):
 def del_useless_features(packets):
     del packets['attack_cat']
     del packets['Label']
-    """ del packets['kmeans_label']
-    del packets['dbscan_label']
-    del packets['manual_label'] """
+    
 
     return packets
 
 
-def div_sd_feature(packets):
-    sd_features_n = int(len(sd_features) / 2)
 
-    packets_sd = packets.copy()
-    for i in range(sd_features_n):
-        s_tar = sd_features[2*i]
-        d_tar = sd_features[2*i+1]
-
-        tar = 'div_' + s_tar[1:]
-
-        try:
-            packets_sd[tar] = packets_sd[d_tar]/packets_sd[s_tar]
-        except: 
-            packets_sd[tar] = 0
-
-        del packets_sd[s_tar]
-        del packets_sd[d_tar]
-
-    return packets_sd
 
 #normalization
 def feature_scaling(packets):
@@ -240,12 +169,6 @@ def feature_scaling(packets):
     return packets_scaled
 
 
-def normalization(packets, features):
-    for f in features:       
-        packets[f] = (packets[f] - packets[f].min()) /\
-            (packets[f].max() - packets[f].min())
-        
-    return packets
 
 def trans_datatype(packets):
     feature_name = packets.keys().tolist()
@@ -259,9 +182,8 @@ def trans_datatype(packets):
 
 def np_fillna(packets):
     df = pd.DataFrame(packets)
-    #print("is nan? ", df.isnull().any())
+    
     df.fillna(0, inplace= True)
-    #print("is nan? again??? ", df.isnull().any())
-    #print(df.isnull().any())
+    
     packets = df.values
     return packets
