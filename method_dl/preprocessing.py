@@ -21,56 +21,25 @@ states = ['FIN', 'CON', 'REQ', 'URH', 'ACC', 'CLO',  'ECO', 'ECR','INT', 'MAS', 
 service = ['dns', 'smtp', 'http', 'ftp', 'ftp-data', 'pop3', 'ssh', 'dhcp', 'ssl', 'snmp', 'radius', 'irc']
 
 
+attackCat = ['[\s]+', '[\s]?F(.)*', '[\s]?A(.)*', '[\s]?B(.)*', '[\s]?D(.)*', '[\s]?E(.)*', '[\s]?G(.)*', '[\s]?R(.)*', '[\s]?S(.)*', '[\s]?W(.)*']
 
 
-
-def seperate_att_lab_catagory(packets):
-    attackCat = packets['attackCat'].to_numpy()
+def SeperateAttackLabel(packets):
+    dataAttackCat = packets['attack_cat'].to_numpy()
     newAttackCat = []
     newLabel = []
+
     
-    for i,value in enumerate(attackCat):
+    for value in enumerate(dataAttackCat):
 
-        if value == '[\s]?F(.)*':       
-            #Fuzzers
-            newAttackCat.append(1)
-            newLabel.append(1)
-        elif value == '[\s]?A(.)*':
-            #Analysis
-            newAttackCat.append(2)
-            newLabel.append(1)
-        elif value == '[\s]?B(.)*':
-            #Backdoors
-            newAttackCat.append(3)
-            newLabel.append(1)
-        elif value == '[\s]?D(.)*':
-            #Dos
-            newAttackCat.append(4)
-            newLabel.append(1)
-        elif value == '[\s]?E(.)*':
-            #Exploits
-            newAttackCat.append(5)
-            newLabel.append(1)
-        elif value == '[\s]?G(.)*':
-            #Generic
-            newAttackCat.append(6)
-            newLabel.append(1)
-        elif value == '[\s]?R(.)*':
-            #Reconnaissance
-            newAttackCat.append(7)
-            newLabel.append(1)
-        elif value == '[\s]?S(.)*':
-            #Shellcode
-            newAttackCat.append(8)
-            newLabel.append(1)
-        elif value == '[\s]?W(.)*':
-            #Worms
-            newAttackCat.append(9)
-            newLabel.append(1)
-        else:
-            newAttackCat.append(0)
-            newLabel.append(0)
+        for i, cat in enumerate(attackCat):
+            if (value == cat):
+                newAttack.append(i)
 
+                if(i != 0):
+                    newLabel.append(1)
+                else:
+                    newLable.append(0)
 
     del packets['attack_cat']
     del packets['Label']
@@ -81,20 +50,25 @@ def seperate_att_lab_catagory(packets):
 
 
 #one hot encoding
-def OneHotEncoding(packets):
+def FeatureOneHot(packets):
 
     for feature in oneHotFeatures:
-        data = packets[feature]
-
-        for element in feature:
+        try:
+            data = packets[feature]
+            for element in feature:
 
             tempList = []
-            for d in data:  
+            for d in data:
                 if (d == element):
                     tempList.append(1)
                 else:
                     tempList.append(0)
             packets[element] = tempList
+
+        except:
+            pass
+
+        
 
     return packets
         
