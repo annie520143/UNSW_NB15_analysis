@@ -98,9 +98,9 @@ if __name__ == "__main__":
 
     # simpleDNN_dropout(feature_dim, units, atv, loss)
     if(opt == 'label'):
-        model = method.simpleDNN_dropout(feature_dim, 32, 'relu', 'mse', output_dim)
+        model = method.simpleDNN_dropout(feature_dim, 'relu', 'mse', output_dim)
     elif(opt == 'attack_cat'):
-        model = method.simpleDNN_dropout(feature_dim, 32, 'relu', 'mse', output_dim)
+        model = method.simpleDNN_dropout(feature_dim, 'relu', 'mse', output_dim)
 
     # Setting callback functions
     csv_logger = CSVLogger('training.log')
