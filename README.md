@@ -2,15 +2,15 @@
 # 執行方式
 1. ### DNN
     1. 開啟`./method_dl/main_dnn.py`
-    2. 更改76-80行的四個參數  
+    2. 更改76-86行的五個參數  
     ```
        trainPath : 訓練用csv檔案
        testPath : 測試用csv檔案
        opt : (label/attack_cat)二擇一，代表輸出為只區分正常異常流量、或能區分所有種類之攻擊
        usedModel : 先前訓練好之model、或要將訓練結果儲存的檔案
+       imp_feature : 決定要進入神經網路的特徵
     ```
-    3. 若要改變進入神經網路的特徵，至`preprocessing.py`第10行，修改`imp_features`陣列。
-    4. 執行`main_dnn.py`，同步進行training和testing
+    3. 執行`main_dnn.py`，同步進行training和testing
     
 2. ### RNN
     
@@ -28,3 +28,9 @@
     6. `TransDatatype(packets)` : 將Dataset轉化成可以正規化處理的格式。
     7. `FeatureScaling(packets)` : 將所有特徵正規化。
     8. `NpFillna(packets)` : 缺失值填0。
+
+3. ##### `./method_dl/method_dnn.py`
+    1. `simpleDNN(feature_dim, units, atv, loss)` : DNN模型。
+    2. `simpleDNN_dropout(feature_dim, atv, loss, output_dim)` : 含dropout的DNN模型，於`main_dnn.py`中呼叫。
+    3. `matricsDNN(predict, actual, method, dim)` : 
+    4. `detailAccuracyDNN(predict, actual, method, dim)` : 
