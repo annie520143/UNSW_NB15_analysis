@@ -79,26 +79,6 @@ def simpleDNN_dropout(feature_dim, atv, loss, output_dim):
 
     return model
 
-#DNN model
-def simpleDNN_specify(feature_dim, units, atv, loss, output_dim):
-    
-    model = Sequential()
-    model.add(Dense(input_dim=feature_dim, units=units,
-                    activation = atv))
-    model.add(BatchNormalization())
-    for i in range(10):
-        model.add(Dense(units=units-i, activation=atv))
-        model.add(BatchNormalization())
-
-    model.add(Dropout(0.2, input_shape=(units-i+1,)))
-    model.add(Dense(units=4, activation='softmax'))
-    opt = Adam(learning_rate=0.01, decay=1e-4)
-    model.compile(loss=loss, optimizer=opt, metrics=['accuracy'])
-
-    return model
-
-        
-
 def matricsDNN(predict, actual, method, dim):
     
     
