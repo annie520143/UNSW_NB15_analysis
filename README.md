@@ -3,7 +3,8 @@
 1. ### DNN
     1. 開啟`./method_dl/main_dnn.py`
     2. 更改76-80行的四個參數  
-    ```trainPath : 訓練用csv檔案
+    ```
+       trainPath : 訓練用csv檔案
        testPath : 測試用csv檔案
        opt : (label/attack_cat)二擇一，代表輸出為只區分正常異常流量、或能區分所有種類之攻擊
        usedModel : 先前訓練好之model、或要將訓練結果儲存的檔案
