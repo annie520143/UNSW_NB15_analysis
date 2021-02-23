@@ -17,9 +17,5 @@ for i in range(len(df)):
         else:
             dul_df.append(list(df.iloc[i, :]))
 
-            
-""" new = pd.DataFrame(new_df, columns=df.keys())
-new.to_csv(file_name+'_nodup.csv', index = False) """
-
 dul = pd.DataFrame(dul_df, columns=df.keys())
 dul.to_csv(file_name+'_dupdata.csv', index=False)
