@@ -22,9 +22,9 @@
     3. `info()` : 印出此次訓練的model的path, 存在哪個.h5檔
     
 2. ##### `./method_dl/preprecessing.py`
-    1. `SeperateAttackLabel(packets)` : UNSW Dataset中每筆資料的標籤有二，一為0/1(非攻擊或攻擊)、另一為字串型態(哪一種類的攻擊)，此函式將標籤從Dataset中移除，另獨立為兩個Array，並將字串型態的標籤轉為數字0-9。此函式具有三個回傳值，除去標籤後的Dataset、只分0/1的標籤Array、依據攻擊種類分為0-9的標籤Array
-    3. `FeatureOneHot(packets)` :
-    4. `GetImp(packets)` : 
-    5. `FeatureScaling(packets)` :
-    6. `TransDatatype(packets)` :
-    7. `NpFillna(packets)` :
+    1. `SeperateAttackLabel(packets)` : UNSW Dataset中每筆資料的標籤有二，一為0/1(非攻擊或攻擊)、另一為字串型態(哪一種類的攻擊)，此函式將標籤從Dataset中移除，另獨立為兩個Array，並將字串型態的標籤轉為數字0-9。此函式具有三個回傳值，除去標籤後的Dataset、只分0/1的標籤Array、依據攻擊種類分為0-9的標籤Array。
+    3. `FeatureOneHot(packets)` : 將三種類別參數(`proto`、`states`、`service`)做oneHotEncoding。
+    5. `GetImp(packets)` : 依據`main_dnn.py`中的`imp_features`選出進入神經網路的特徵。
+    6. `TransDatatype(packets)` : 將Dataset轉化成可以正規化處理的格式。
+    7. `FeatureScaling(packets)` : 將所有特徵正規化。
+    8. `NpFillna(packets)` : 缺失值填0。
