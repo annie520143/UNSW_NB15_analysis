@@ -88,15 +88,6 @@ def GetImp(packets,imp_features):
     return packets_imp
 
 
-#normalization
-def FeatureScaling(packets):
-    sc = MinMaxScaler(feature_range=(0, 1))
-    packets = np.nan_to_num(packets)
-    packets_scaled = sc.fit_transform(packets)
-
-    return packets_scaled
-
-
 def TransDatatype(packets):
     feature_name = packets.keys().tolist()
 
@@ -105,6 +96,15 @@ def TransDatatype(packets):
         packets[f] = pd.to_numeric(packets[f], errors='coerce')
         
     return packets
+
+
+#normalization
+def FeatureScaling(packets):
+    sc = MinMaxScaler(feature_range=(0, 1))
+    packets = np.nan_to_num(packets)
+    packets_scaled = sc.fit_transform(packets)
+
+    return packets_scaled
 
 
 def NpFillna(packets):
