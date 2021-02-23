@@ -17,11 +17,12 @@ oneHotDict = {
 'service' : ['dns', 'smtp', 'http', 'ftp', 'ftp-data', 'pop3', 'ssh', 'dhcp', 'ssl', 'snmp', 'radius', 'irc']
 }
 
-attackCat = [r'[\s]?F(.)*', r'[\s]?A(.)*', r'[\s]?B(.)*', r'[\s]?D(.)*', r'[\s]?E(.)*', r'[\s]?G(.)*', r'[\s]?R(.)*', r'[\s]?S(.)*', r'[\s]?W(.)*']
+attackCat = [r'[\s]?N(.)*', r'[\s]?F(.)*', r'[\s]?A(.)*', r'[\s]?B(.)*', r'[\s]?D(.)*', r'[\s]?E(.)*', r'[\s]?G(.)*', r'[\s]?R(.)*', r'[\s]?S(.)*', r'[\s]?W(.)*']
 
 
 def SeperateAttackLabel(packets):
     dataAttackCat = packets['attack_cat'].to_numpy()
+    print("shape of dataAttackCat:", dataAttackCat.shape)
     newAttackCat = []
     newLabel = []
 
@@ -37,14 +38,18 @@ def SeperateAttackLabel(packets):
                 flag = 0
                 if value == 0:
                     newAttackCat.append(0)
+                    newLabel.append(0)
                 else:
-                    
-                    newAttackCat.append(i+1)
-
+                    newAttackCat.append(i)
+                    newLabel.append(1)
+                
+                """
                 if(value != 0):
                     newLabel.append(1)
                 else:
                     newLabel.append(0)
+                    print("hi!! ")
+                """
     
     del packets['attack_cat']
     del packets['Label']

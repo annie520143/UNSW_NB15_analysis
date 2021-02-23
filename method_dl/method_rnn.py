@@ -18,67 +18,24 @@ import preprocessing as prep
 
 attack_cat = ['Normal', 'Fuzzers', 'Analysis', 'Backdoors', 'Dos', 'Exploits', 'Generic', 'Reconnaissance', 'Shellcode', 'Worms']
 
-def defRNN_cat(data, group_num):
-
-    tempdata = data.copy()
-    del tempdata['attack_cat']
-    
-    #deal with missing
-    data.fillna(value=0, inplace=True)  # fill missing with 0
+def defRNN(data, label, group_num):
     X, y = [], []
-    #srcip = []
-    
-    #transforming datatype (object -> normal datatype)
-    tempdata = prep.trans_datatype(tempdata) 
-    
-    #scaling
-    tempdata = prep.feature_scaling(tempdata)
-    
     n = group_num  # n packets per group
-    for i in range(data.shape[0] - n):
-        X.append(tempdata[i:i+n])  # i - i+n-1
-        y.append(data['attack_cat'].iloc[i+n-1])  # i+n-1
-        #srcip.append(data['s
-        # rcip'].iloc[i+n-1])
-        #indexes_tr.append(data_tr.index[i+n-1])     #i+n-1
-
     
-    X = np.array(X)
-    y = np.array(y)
-    print(X.shape)
+
+    for i in range(data.shape[0] - n):
+        X.append(data[i:i+n])  # i - i+n-1
+        y.append(label[i+n-1])  # i+n-1
+        
+
+    X_new, y_new = [], []
+    
+    X_new = np.array(X)
+    y_new = np.array(y)
+    #print(X.shape)
     #srcip = np.array(srcip)
 
-    return X, y
-
-def defRNN_label(data, group_num):
-    
-    tempdata = data.copy()
-    del tempdata['Label']
-    
-    #deal with missing
-    data.fillna(value=0, inplace=True)  # fill missing with 0
-    X, y = [], []
-    #srcip = []
-    
-    #transforming datatype (object -> normal datatype)
-    tempdata = prep.trans_datatype(tempdata) 
-    
-    #scaling
-    tempdata = prep.feature_scaling(tempdata)
-    
-    n = group_num  # n packets per group
-    for i in range(data.shape[0] - n):
-        X.append(tempdata[i:i+n])  # i - i+n-1
-        y.append(data['Label'].iloc[i+n-1])  # i+n-1
-        #srcip.append(data['s
-        # rcip'].iloc[i+n-1])
-        #indexes_tr.append(data_tr.index[i+n-1])     #i+n-1
-
-    X = np.array(X)
-    y = np.array(y)
-    #srcip = np.array(srcip)
-
-    return X, y
+    return X_new, y_new
 
 
 #RNN model

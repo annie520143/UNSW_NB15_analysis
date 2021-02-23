@@ -100,8 +100,6 @@ def simpleDNN_specify(feature_dim, units, atv, loss, output_dim):
         
 
 def matricsDNN(predict, actual, method, dim):
-    
-    
     print("=========================")
 
     #index and column for the crosstab must have type numpy.ndarray

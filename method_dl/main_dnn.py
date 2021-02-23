@@ -41,7 +41,7 @@ def ProcessData(datapath, opt):
     packets.fillna(value=0, inplace=True)
 
     packets, attackCat, label = prep.SeperateAttackLabel(packets)
-    
+    print(attackCat, label)
 
     packets = prep.GetImp(packets)
     packets = prep.FeatureOneHot(packets)
@@ -95,8 +95,7 @@ if __name__ == "__main__":
     feature_dim = trainNP.shape[1] # how mant features
     output_dim = trainlabelNP.shape[1]
 
-
-    # simpleDNN_dropout(feature_dim, units, atv, loss)
+    # simpleDNN_dropout(feature_dim, atv, loss, output_dim)
     if(opt == 'label'):
         model = method.simpleDNN_dropout(feature_dim, 'relu', 'mse', output_dim)
     elif(opt == 'attack_cat'):
