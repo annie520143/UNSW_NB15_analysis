@@ -93,20 +93,20 @@ def ProcessData(datapath, opt):
 
     packets = prep.FeatureOneHot(packets)
     packets = prep.TransDatatype(packets)
-    
+
     #scaling (data type changes after scaling, i.e. df -> np)
     packetScaled = prep.FeatureScaling(packets)
 
 
     if(opt == 'attack_cat'):
-        packetGroup, attackCatGroup = method.defRNN(packets, attackCat, 10)
+        packetGroup, attackCatGroup = method.defRNN(packetScaled, attackCat, 10)
         attackCatOneHot = CategoryOneHot(attackCatGroup, opt)
         attackCatNP, packetsNP = np.array(attackCatOneHot), np.array(packetGroup)
         packetsNP = prep.NpFillna(packetsNP)
         return packetsNP, attackCatNP, attackCat
         
     elif(opt == 'label'):
-        packetGroup, labelGroup = method.defRNN(packets, label, 10)
+        packetGroup, labelGroup = method.defRNN(packetScaled, label, 10)
         labelOneHot = CategoryOneHot(labelGroup, opt)
         labelNP, packetsNP = np.array(labelOneHot), np.array(packetGroup)
         packetsNP = prep.NpFillna(packetsNP)

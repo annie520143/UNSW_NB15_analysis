@@ -26,16 +26,13 @@ def defRNN(data, label, group_num):
     for i in range(data.shape[0] - n):
         X.append(data[i:i+n])  # i - i+n-1
         y.append(label[i+n-1])  # i+n-1
-        
 
-    X_new, y_new = [], []
-    
-    X_new = np.array(X)
-    y_new = np.array(y)
+    X = np.array(X)
+    y = np.array(y)
     #print(X.shape)
     #srcip = np.array(srcip)
 
-    return X_new, y_new
+    return X, y
 
 
 #RNN model
