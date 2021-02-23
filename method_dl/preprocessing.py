@@ -4,12 +4,6 @@ import numpy as np
 import pandas as pd
 import re
 
-# all feature, except srcip dstip
-all_features = ['sport', 'dsport', 'proto', 'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'stcpb', 'dtcpb', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Stime', 'Ltime','Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attackCat', 'Label']
-
-imp_features = ['sport', 'dsport', 'proto', 'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'stcpb', 'dtcpb', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Stime', 'Ltime',
-                'Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attackCat', 'Label']
-
 #mutable
 oneHotDict = {
 'proto' : ['tcp', 'udp', 'arp', 'ospf', 'ip', 'icmp', 'unas'],
@@ -81,7 +75,7 @@ def FeatureOneHot(packets):
     return packets
         
 
-def GetImp(packets):
+def GetImp(packets,imp_features):
     imp_features_n = len(imp_features) 
 
     packets_imp = packets.copy()
@@ -99,15 +93,6 @@ def GetImp(packets):
     return packets_imp
 
 
-#normalization
-def FeatureScaling(packets):
-    sc = MinMaxScaler(feature_range=(0, 1))
-    packets = np.nan_to_num(packets)
-    packets_scaled = sc.fit_transform(packets)
-
-    return packets_scaled
-
-
 def TransDatatype(packets):
     feature_name = packets.keys().tolist()
 
@@ -116,6 +101,15 @@ def TransDatatype(packets):
         packets[f] = pd.to_numeric(packets[f], errors='coerce')
         
     return packets
+
+
+#normalization
+def FeatureScaling(packets):
+    sc = MinMaxScaler(feature_range=(0, 1))
+    packets = np.nan_to_num(packets)
+    packets_scaled = sc.fit_transform(packets)
+
+    return packets_scaled
 
 
 def NpFillna(packets):
