@@ -79,6 +79,7 @@ def CategoryOneHot(label, opt):
                 label_np.append(a)
 
     label_np = np.array(label_np)
+    #print(label_np[:10])
     return label_np
 
 
@@ -89,7 +90,7 @@ def ProcessData(datapath, opt):
 
     packets, attackCat, label = prep.SeperateAttackLabel(packets)
 
-    print("shape: ", attackCat.shape, label.shape)
+    #print("shape: ", attackCat.shape, label.shape)
 
     packets = prep.FeatureOneHot(packets)
     packets = prep.TransDatatype(packets)
@@ -124,31 +125,30 @@ trainPath = "../dataset/UNSW-NB15_training-set.csv"
 testPath = "../dataset/1_1-2_mix_time.csv"
 
 opt = 'attack_cat'
-usedModel = 'model/dnn_selfdef1_random.h5'
+usedModel = 'model/rnn_best_cat_10.h5'
 
 if __name__ == "__main__":
-
-    train_path = "../dataset/UNSW-NB15_training-set.csv"
     
-    expected_output = 'attack_cat'
-    train_np, trainlabel_np, trainlabel_list = ProcessData(train_path, expected_output)
+    #label depends on expected_output
+    trainNP, trainlabelNP, trainlabelList = ProcessData(trainPath, opt)
+    testNP, testlabelNP, testlabelList = ProcessData(testPath, opt)
 
     
-    dataset_size = train_np.shape[0]  # how many data
-    feature_dim = train_np[0].shape   # input dimention
+    dataset_size = trainNP.shape[0]  # how many data
+    feature_dim = trainNP.shape[1]   # input dimention
 
     
 
     # simpleRNN(feature_dim, atv, loss, output dim)
-    if(expected_output == 'label'):
+    if(opt == 'label'):
         model = method.simpleRNN(feature_dim, 'relu', 'mse', 2)
-    elif(expected_output == 'attack_cat'):
+    elif(opt == 'attack_cat'):
         model = method.simpleRNN(feature_dim, 'relu', 'mse', 10)
 
     # Setting callback functions
     csv_logger = CSVLogger('training.log')
 
-    checkpoint = ModelCheckpoint(filepath='model/rnn_best_cat_10.h5',
+    checkpoint = ModelCheckpoint(filepath=usedModel,
                                 verbose=1,
                                 save_best_only=True,
                                 monitor='accuracy',
@@ -159,5 +159,5 @@ if __name__ == "__main__":
                                 mode='max')
 
     #training
-    model.fit(train_np, trainlabel_np, batch_size=100, epochs=15, callbacks=[earlystopping, checkpoint, csv_logger], validation_split=0.1)
+    model.fit(trainNP, trainlabelNP, batch_size=100, epochs=15, callbacks=[earlystopping, checkpoint, csv_logger], validation_split=0.1)
 

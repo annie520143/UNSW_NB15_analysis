@@ -27,10 +27,10 @@ def defRNN(data, label, group_num):
         X.append(data[i:i+n])  # i - i+n-1
         y.append(label[i+n-1])  # i+n-1
 
+
     X = np.array(X)
     y = np.array(y)
-    #print(X.shape)
-    #srcip = np.array(srcip)
+
 
     return X, y
 

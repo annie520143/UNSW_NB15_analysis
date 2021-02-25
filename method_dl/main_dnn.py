@@ -139,9 +139,6 @@ if __name__ == "__main__":
     
     method.matricsDNN(predictLabel, testlabelList, opt, output_dim)
     method.detailAccuracyDNN(predictLabel, testlabelList, opt, output_dim)
-    #method.comparePredict(test_path, predictLabel, testlabelList, expected_output )
-
-    #np.set_printoptions(threshold=sys.maxsize)
 
 
 

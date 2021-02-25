@@ -16,7 +16,6 @@ attackCat = [r'[\s]?N(.)*', r'[\s]?F(.)*', r'[\s]?A(.)*', r'[\s]?B(.)*', r'[\s]?
 
 def SeperateAttackLabel(packets):
     dataAttackCat = packets['attack_cat'].to_numpy()
-    print("shape of dataAttackCat:", dataAttackCat.shape)
     newAttackCat = []
     newLabel = []
 
@@ -113,9 +112,6 @@ def FeatureScaling(packets):
 
 
 def NpFillna(packets):
-    df = pd.DataFrame(packets)
+    packets[np.isnan(packets)] = 0
     
-    df.fillna(0, inplace= True)
-    
-    packets = df.values
     return packets
