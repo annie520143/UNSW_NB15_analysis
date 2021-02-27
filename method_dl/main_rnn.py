@@ -124,7 +124,7 @@ imp_features = ['sport', 'dsport', 'proto', 'state', 'dur', 'sbytes', 'dbytes', 
 trainPath = "../dataset/UNSW-NB15_training-set.csv"
 testPath = "../dataset/1_1-2_mix_time.csv"
 
-opt = 'attack_cat'
+opt = 'label'
 usedModel = 'model/rnn_best_cat_10.h5'
 
 if __name__ == "__main__":
@@ -134,19 +134,20 @@ if __name__ == "__main__":
     testNP, testlabelNP, testlabelList = ProcessData(testPath, opt)
 
     
+    
     dataset_size = trainNP.shape[0]  # how many data
-    feature_dim = trainNP.shape[1]   # input dimention
-
+    feature_dim = (trainNP.shape[1], trainNP.shape[2])  # input dimention
+    output_dim = trainlabelNP.shape[1]  # label -> 2, attack_cat -> 10
     
 
     # simpleRNN(feature_dim, atv, loss, output dim)
     if(opt == 'label'):
-        model = method.simpleRNN(feature_dim, 'relu', 'mse', 2)
+        model = method.simpleRNN(feature_dim, 'relu', 'mse', output_dim)
     elif(opt == 'attack_cat'):
-        model = method.simpleRNN(feature_dim, 'relu', 'mse', 10)
+        model = method.simpleRNN(feature_dim, 'relu', 'mse', output_dim)
 
     # Setting callback functions
-    csv_logger = CSVLogger('training.log')
+    csv_logger = CSVLogger('rnn_training.log')
 
     checkpoint = ModelCheckpoint(filepath=usedModel,
                                 verbose=1,
@@ -160,4 +161,10 @@ if __name__ == "__main__":
 
     #training
     model.fit(trainNP, trainlabelNP, batch_size=100, epochs=15, callbacks=[earlystopping, checkpoint, csv_logger], validation_split=0.1)
+
+    #traing result
+    result = model.evaluate(trainNP,  trainlabelNP)
+    print("training accuracy = ", result[1])
+
+    
 

@@ -139,8 +139,6 @@ def detailAccuracyDNN(predict, actual, method, dim):
     
     attack_n = n - total[0]
     
-    #print("attack_cat len:", len(attack_cat))
-
     if(method == 'attack_cat'):
         for index in range(dim):
             print("==========================")

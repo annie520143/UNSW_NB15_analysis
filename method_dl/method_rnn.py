@@ -38,7 +38,7 @@ def defRNN(data, label, group_num):
 #RNN model
 def simpleRNN(feature_dim, atv, loss, output_dim):
     model = Sequential()
-    model.add(LSTM(100,  return_sequences=True,input_shape=feature_dim))
+    model.add(LSTM(100,  return_sequences=True, input_shape=feature_dim))
     model.add(LSTM(100))
     #model.add(Dense(80))
     model.add(Dense(15))

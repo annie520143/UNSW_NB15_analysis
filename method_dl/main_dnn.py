@@ -7,7 +7,7 @@ from keras.callbacks import CSVLogger
 from keras.callbacks import ModelCheckpoint
 from keras.callbacks import EarlyStopping
 from keras.models import Sequential
-import keras.models as ks
+from keras.models import load_model
 from sklearn.preprocessing import OneHotEncoder
 
 #preprocessing
@@ -41,7 +41,6 @@ def ProcessData(datapath, opt):
     packets.fillna(value=0, inplace=True)
 
     packets, attackCat, label = prep.SeperateAttackLabel(packets)
-    print(attackCat, label)
 
     packets = prep.GetImp(packets,imp_features)
     packets = prep.FeatureOneHot(packets)
@@ -69,48 +68,55 @@ def info():
     print('Basic info:')
     print('training dataset:', trainPath)
     print('testing dataset: ', testPath)
-    print('model: ', usedModel)
+    print('model: ', usedModelPath)
     print('===================================')
 
 
 trainPath = "../dataset/1_0-1_mix_time.csv"
 testPath = "../dataset/1_1-2_mix_time.csv"
 
-opt = 'attack_cat'
-usedModel = 'model/dnn_selfdef1_random.h5'
+opt = 'attack_cat'  
+usedModelPath = 'model/dnn_selfdef1_random.h5'
+newModelName = 'seldef'
+reTrain = True
+
 
 # all feature, except srcip dstip
 all_features = ['sport', 'dsport', 'proto', 'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'stcpb', 'dtcpb', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Stime', 'Ltime','Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attackCat', 'Label']
 
-imp_features = ['sport', 'dsport', 'proto', 'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'stcpb', 'dtcpb', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Stime', 'Ltime',
-                'Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attackCat', 'Label']
+imp_features = ['sport', 'dsport', 'proto', 'state', 'dur', 'sbytes', 'dbytes', 'sttl', 'dttl', 'sloss', 'dloss', 'service', 'Sload', 'Dload', 'Spkts', 'Dpkts', 'swin', 'dwin', 'stcpb', 'dtcpb', 'smeansz', 'dmeansz', 'trans_depth', 'res_bdy_len', 'Sjit', 'Djit', 'Stime', 'Ltime', 'Sintpkt', 'Dintpkt', 'tcprtt', 'synack', 'ackdat', 'is_sm_ips_ports', 'ct_state_ttl', 'ct_flw_http_mthd', 'is_ftp_login', 'ct_ftp_cmd', 'ct_srv_src', 'ct_srv_dst', 'ct_dst_ltm', 'ct_dst_ltm', 'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm', 'attackCat', 'Label']
 
 
 if __name__ == "__main__":
 
-
+    
     #label depends on expected_output
     trainNP, trainlabelNP, trainlabelList = ProcessData(trainPath, opt)
     testNP, testlabelNP, testlabelList = ProcessData(testPath, opt)
-    
 
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
 
     dataset_size = trainNP.shape[0]  # how many data
-    feature_dim = trainNP.shape[1] # how mant features
+    feature_dim = trainNP.shape[1]  # how mant features
     output_dim = trainlabelNP.shape[1]
 
-    # simpleDNN_dropout(feature_dim, atv, loss, output_dim)
-    if(opt == 'label'):
-        model = method.simpleDNN_dropout(feature_dim, 'relu', 'mse', output_dim)
-    elif(opt == 'attack_cat'):
-        model = method.simpleDNN_dropout(feature_dim, 'relu', 'mse', output_dim)
+        
+    if(reTrain):
+        # simpleDNN_dropout(feature_dim, atv, loss, output_dim)
+        if(opt == 'label'):
+            model = method.simpleDNN_dropout(feature_dim, 'relu', 'mse', output_dim)
+        elif(opt == 'attack_cat'):
+            model = method.simpleDNN_dropout(
+                feature_dim, 'relu', 'mse', output_dim)
+
+        usedModelPath = 'model/dnn_' + newModelName + '.h5'
+        model.save(usedModelPath)
+
+        #csv_logger = CSVLogger('dnn_' + newModelName+ '.log')
 
     # Setting callback functions
-    csv_logger = CSVLogger('training.log')
-
-    checkpoint = ModelCheckpoint(filepath=usedModel,
+    checkpoint = ModelCheckpoint(filepath=usedModelPath,
                                 verbose=1,
                                 save_best_only=True,
                                 monitor='accuracy',
@@ -119,23 +125,24 @@ if __name__ == "__main__":
                                 patience=10,
                                 verbose=1,
                                 mode='max')
-    
+
+
+    model = load_model(usedModelPath)
+
+
     #training
-    model.fit(trainNP, trainlabelNP, batch_size=100, epochs=100, callbacks=[earlystopping, checkpoint, csv_logger], shuffle=True)
-   
+    model.fit(trainNP, trainlabelNP, batch_size=100, epochs=100, callbacks=[earlystopping, checkpoint], shuffle=True)
+
     #traing result
     result = model.evaluate(trainNP,  trainlabelNP)
     print("training accuracy = ", result[1])
-
-    model = ks.load_model(usedModel)
-    #print(model.summary())
     
     #testing result
     result = model.evaluate(testNP,  testlabelNP)
     print("testing accuracy = ", result[1])
     
     #predict result
-    predictLabel = model.predict_classes(testNP)
+    predictLabel = np.argmax(model.predict(testNP), axis=1)
     
     method.matricsDNN(predictLabel, testlabelList, opt, output_dim)
     method.detailAccuracyDNN(predictLabel, testlabelList, opt, output_dim)
